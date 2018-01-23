@@ -65,65 +65,31 @@
 						<h5 class="card-title">Register course</h5>
 						<form class="needs-validation card-text">
 							<div class="mb-3">
-								<label for="username">Username</label>
+								<label for="username">Course Name</label>
 								<div class="input-group">
-									<div class="input-group-prepend">
-										<span class="input-group-text">@</span>
-									</div>
 									<input type="text" class="form-control" id="username"
 										placeholder="Username" required>
 								</div>
 							</div>
-
 							<div class="mb-3">
-								<label for="email">Email <span class="text-muted">(Optional)</span></label>
-								<input type="email" class="form-control" id="email"
-									placeholder="you@example.com">
-							</div>
-
-							<div class="mb-3">
-								<label for="address">Address</label> <input type="text"
-									class="form-control" id="address" placeholder="1234 Main St"
-									required>
-							</div>
-
-							<div class="row">
-								<div class="col-md-5 mb-3">
-									<label for="country">Country</label> <select
+								<label for="country">Prerequisite Course</label> 							
+								<div class="input-group">
+									<select
 										class="custom-select d-block w-100" id="country" required>
-										<option value="">Choose...</option>
-										<option>United States</option>
+										<option value="">EL101</option>
+										<option>EL102</option>
+										<option>IELTS PREP</option>
+										<option>TOEFL PREP</option>
 									</select>
-									<div class="invalid-feedback">Please select a valid
-										country.</div>
-								</div>
-								<div class="col-md-4 mb-3">
-									<label for="state">State</label> <select
-										class="custom-select d-block w-100" id="state" required>
-										<option value="">Choose...</option>
-										<option>California</option>
-									</select>
-									<div class="invalid-feedback">Please provide a valid
-										state.</div>
-								</div>
-								<div class="col-md-3 mb-3">
-									<label for="zip">Zip</label> <input type="text"
-										class="form-control" id="zip" placeholder="" required>
-									<div class="invalid-feedback">Zip code required.</div>
+
 								</div>
 							</div>
-							<hr class="mb-4">
 							<div class="custom-control custom-checkbox">
 								<input type="checkbox" class="custom-control-input"
 									id="same-address"> <label class="custom-control-label"
-									for="same-address">Shipping address is the same as my
-									billing address</label>
+									for="same-address">I accept the License and User Agreement of English Learning Online System</label>
 							</div>
-							<div class="custom-control custom-checkbox">
-								<input type="checkbox" class="custom-control-input"
-									id="save-info"> <label class="custom-control-label"
-									for="save-info">Save this information for next time</label>
-							</div>
+
 
 							<hr class="mb-4">
 							<button class="btn btn-outline-secondary btn-lg btn-block"
@@ -156,40 +122,71 @@
 						</form>
 					</div>
 				</div>
+				<hr>
+				<div class="card">
+					<div class="card-body">
+						<h5 class="card-title">Feedbacks</h5>
+						
+						<form class="needs-validation card-text">
+							<div class="card mb-4 box-shadow">
+								<div class="card-header">
+									<h5 class="my-0 font-weight-normal">Jamsrandorj <small class="text-muted">12 Jan 2018 - EL101</small></h5>
+								</div>
+								<div class="card-body">
+									<p>This is the first feedback test. I've just created this in order to look professional our project.</p>
+									<button type="button" class="btn btn-primary" type="submit">Reply</button> 
+									<button type="button" class="btn" type="submit">Hide</button>
+								</div>
+							</div>
+						</form>
+						<form class="needs-validation card-text">
+							<div class="card mb-4 box-shadow">
+								<div class="card-header">
+									<h5 class="my-0 font-weight-normal">Xiubao <small class="text-muted">12 Jan 2018 - TOEFL PREP</small></h5>
+								</div>
+								<div class="card-body">
+									<p>This is the first feedback test. I've just created this in order to look professional our project.</p>
+									<button type="button" class="btn btn-primary" type="submit">Reply</button> 
+									<button type="button" class="btn" type="submit">Hide</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+				<hr>
+			</div>
+
+
+			<aside class="col-md-4 blog-sidebar">
+				<div class="p-3 mb-3 bg-light rounded">
+					<p class="mb-0">The Heart is your student, for love is the only
+						way we learn.</p>
 				</div>
 
+				<div class="p-3">
+					<h4 class="font-italic">Teaching courses</h4>
+					<ol class="list-unstyled mb-0">
+						<li><a href="#">EL101</a></li>
+						<li><a href="#">EL102</a></li>
+						<li><a href="#">TOEFL PREP</a></li>
+						<li><a href="#">IELTS PREP</a></li>
+						<li><a href="#">GRE PREP</a></li>
+					</ol>
+				</div>
 
-				<aside class="col-md-4 blog-sidebar">
-					<div class="p-3 mb-3 bg-light rounded">
-						<p class="mb-0">The Heart is your student, for love is the
-							only way we learn.</p>
-					</div>
+				<div class="p-3">
+					<h4 class="font-italic">Contact us</h4>
+					<ol class="list-unstyled">
+						<li><a href="#">GitHub</a></li>
+						<li><a href="#">Twitter</a></li>
+						<li><a href="#">Facebook</a></li>
+					</ol>
+				</div>
+			</aside>
+			<!-- /.blog-sidebar -->
 
-					<div class="p-3">
-						<h4 class="font-italic">Teaching courses</h4>
-						<ol class="list-unstyled mb-0">
-							<li><a href="#">EL101</a></li>
-							<li><a href="#">EL102</a></li>
-							<li><a href="#">TOEFL PREP</a></li>
-							<li><a href="#">IELTS PREP</a></li>
-							<li><a href="#">GRE PREP</a></li>
-						</ol>
-					</div>
-
-					<div class="p-3">
-						<h4 class="font-italic">Contact us</h4>
-						<ol class="list-unstyled">
-							<li><a href="#">GitHub</a></li>
-							<li><a href="#">Twitter</a></li>
-							<li><a href="#">Facebook</a></li>
-						</ol>
-					</div>
-				</aside>
-				<!-- /.blog-sidebar -->
-
-			</div>
-			<!-- /.row -->
-		</main>
+		</div>
+		<!-- /.row --> </main>
 		<!-- /.container -->
 
 		<footer class="blog-footer">
