@@ -23,23 +23,24 @@
     <div class="container">
 
       <form class="form-signin">
-        <h2 class="form-signin-heading">Please sign in</h2>
+        <h2 class="form-signin-heading">Please register</h2>
+        <label for="inputEmail" class="sr-only">First Name</label>
+        <input type="text" id="inputFirstName" class="form-control" placeholder="First Name" required autofocus>
+        <label for="inputEmail" class="sr-only">Last Name</label>
+        <input type="text" id="inputLastName" class="form-control" placeholder="Last Name" required>
         <label for="inputEmail" class="sr-only">Email address</label>
-        <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+        <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required>
         <label for="inputPassword" class="sr-only">Password</label>
         <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" value="remember-me"> Remember me
-          </label>
-        </div>
-        <div class="control-group">
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+        <label for="inputPassword" class="sr-only">Choose</label>
+        <select class="custom-select d-block  w-100" id="state" required>
+          <option value="">Student</option>
+          <option>Professor</option>
+        </select>
         <br/>
-        Are you new? <button class="btn btn-lg btn-info btn btn-block" onclick="window.location.href='register.jsp'">Click here</button>
-      	</div>  
+        <button class="btn btn-lg btn-outline-secondary btn-block" type="submit">Register</button>
       </form>
-      
+
     </div> <!-- /container -->
   </body>
 </html>
