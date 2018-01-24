@@ -5,18 +5,28 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class DbUtil {
-	  public static Connection getConnection(String driver,String url,String username,String password) {
+	final static String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+	final static String DB_URL = "jdbc:mysql://localhost/student";
+	final static String dbname = "root";
+	final static String dbpwd = "root";
+	
+	
+	  public static Connection getConnection() {
+		  
 	        Connection conn = null;
 	        try {
-	            Class.forName(driver);
-	            conn = DriverManager.getConnection(url, username, password);
+	            InitDatabase.getInitDatabase();
+				Class.forName(JDBC_DRIVER);
+	            conn = DriverManager.getConnection(DB_URL,dbname, dbpwd);
 	        } catch (Exception e) {
 	            e.printStackTrace();
 	        }
 	        return conn;
 	    }
 	  
-	  public static void closeAll(Connection conn, PreparedStatement pstmt, ResultSet rs) {
+	  public static void closeAll(PreparedStatement pstmt, ResultSet rs) {
+		  
+	  	   Connection conn = DbUtil.getConnection();
 	        try {
 	            if (rs != null) {
 	                rs.close();
@@ -32,7 +42,8 @@ public class DbUtil {
 	        }
 	    }
 	  
-	    public static int executUpdate(Connection conn,String sql, Object[] param) {
+	    public static int executUpdate(String sql, Object[] param) {
+	   	   Connection conn = DbUtil.getConnection();
 	        int result = 0;
 	        PreparedStatement pstmt = null;
 	        try {
@@ -46,12 +57,15 @@ public class DbUtil {
 	        } catch (Exception e) {
 	            e.printStackTrace();
 	        } finally {
-	            closeAll(conn, pstmt, null);
+	            closeAll(pstmt, null);
 	        }
 	        return result;
 	    }
 	    
-	    public static ResultSet executQuery(Connection conn,String sql, String[] param) {
+	    public static ResultSet executQuery(String sql, String[] param) {
+	    	
+	    	   Connection conn = DbUtil.getConnection();
+	    	   
 	        PreparedStatement pstmt = null;
 	        ResultSet result = null;
 	        try {
@@ -65,7 +79,7 @@ public class DbUtil {
 	        } catch (Exception e) {
 	            e.printStackTrace();
 	        } finally {
-	            closeAll(conn, pstmt, null);
+	            closeAll(pstmt, null);
 	        } 
 	        return result;
 	    }

@@ -48,7 +48,7 @@ public class User {
 		return this.courselist;
 	}
 	
-	public void register() {
+	public void register(Integer userid,String username,Integer usertype,String emailaddress,List<Course> courselist) {
 		
 	}
 	

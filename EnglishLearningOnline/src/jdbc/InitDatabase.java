@@ -17,11 +17,6 @@ public class InitDatabase {
 	static String sql_create_tb_feedback = "create table tb_feedback(feedbackid int(20) not null auto_increment primary key,"
 			+ "userid int(20),usertype int(6),username char(20),comment char(255),createdtime char(30);";
 
-	final static String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-	final static String DB_URL = "jdbc:mysql://localhost/student";
-	final static String dbname = "root";
-	final static String dbpwd = "root";
-	
 	private static volatile InitDatabase initdatabase = null;
 	private InitDatabase(){};
 	
@@ -37,21 +32,19 @@ public class InitDatabase {
     } 
 	
 	public void create_db() {
-		java.sql.Connection conn = null;		
 		try
 		{
-			conn = DbUtil.getConnection(JDBC_DRIVER,DB_URL,dbname,dbpwd);
 			int ret  = 0 ;
-			ret  = DbUtil.executUpdate(conn, sql_create_db, null);
+			ret  = DbUtil.executUpdate(sql_create_db, null);
 			
-			ret  = DbUtil.executUpdate(conn, sql_use_db, null);
+			ret  = DbUtil.executUpdate(sql_use_db, null);
 
-			ret  = DbUtil.executUpdate(conn, sql_create_tb_user, null);
+			ret  = DbUtil.executUpdate(sql_create_tb_user, null);
 
-			ret  = DbUtil.executUpdate(conn, sql_create_tb_course, null);
-			ret  = DbUtil.executUpdate(conn, sql_create_tb_material, null);
+			ret  = DbUtil.executUpdate(sql_create_tb_course, null);
+			ret  = DbUtil.executUpdate(sql_create_tb_material, null);
 			
-			ret  = DbUtil.executUpdate(conn, sql_create_tb_feedback, null);
+			ret  = DbUtil.executUpdate(sql_create_tb_feedback, null);
 			if (ret !=0) {
 				System.out.println("create db error!");
 			}
