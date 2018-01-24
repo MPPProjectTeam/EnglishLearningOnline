@@ -1,10 +1,5 @@
 package jdbc;
 
-import java.sql.DriverManager;
-
-import com.mysql.jdbc.Connection;
-import com.mysql.jdbc.Statement;
-
 public class InitDatabase {
 
 	static String sql_create_db = "create database `db_englishlearningonline`;";
@@ -42,78 +37,26 @@ public class InitDatabase {
     } 
 	
 	public void create_db() {
-		java.sql.Connection conn = null;
-		java.sql.Statement stmt = null;
+		java.sql.Connection conn = null;		
 		try
 		{
-			Class.forName(JDBC_DRIVER);
-			conn = DriverManager.getConnection(DB_URL,dbname,dbpwd);
+			conn = DbUtil.getConnection(JDBC_DRIVER,DB_URL,dbname,dbpwd);
+			int ret  = 0 ;
+			ret  = DbUtil.executUpdate(conn, sql_create_db, null);
 			
-			stmt = conn.createStatement();
-			//create db
-			if(0 == stmt.executeLargeUpdate(sql_create_db))
-			{
-				System.out.println("create database success！");
-			}
-			else
-			{
-				System.out.println("create database failed！");
-			}
-			//use db
-			if(0 == stmt.executeLargeUpdate(sql_use_db))
-			{
-				System.out.println("use database success！");
-			}
-			else
-			{
-				System.out.println("use database failed！");
-			}
-			//create tb_user
-			if(0 == stmt.executeLargeUpdate(sql_create_tb_user))
-			{
-				System.out.println("create table user success！");
-			}
-			else
-			{
-				System.out.println("create table user failed！");
-			}
-			//create tb_course
-			if(0 == stmt.executeLargeUpdate(sql_create_tb_course))
-			{
-				System.out.println("create table course success！");
-			}
-			else
-			{
-				System.out.println("create table ucourses failed！");
-			}
+			ret  = DbUtil.executUpdate(conn, sql_use_db, null);
+
+			ret  = DbUtil.executUpdate(conn, sql_create_tb_user, null);
+
+			ret  = DbUtil.executUpdate(conn, sql_create_tb_course, null);
+			ret  = DbUtil.executUpdate(conn, sql_create_tb_material, null);
 			
-			//create tb_material
-			if(0 == stmt.executeLargeUpdate(sql_create_tb_material))
-			{
-				System.out.println("create table material success！");
+			ret  = DbUtil.executUpdate(conn, sql_create_tb_feedback, null);
+			if (ret !=0) {
+				System.out.println("create db error!");
 			}
-			else
-			{
-				System.out.println("create table material failed！");
-			}
-			
-			//create tb_feedback
-			if(0 == stmt.executeLargeUpdate(sql_create_tb_feedback))
-			{
-				System.out.println("create table feedback success！");
-			}
-			else
-			{
-				System.out.println("create table feedback failed！");
-			}
-			
-			stmt.close();
-			conn.close();
-	    }
-		catch(Exception e)
-		{
-		         System.out.println("init database failed");
-		         e.printStackTrace();
-		}
+		}catch (Exception e) {
+            e.printStackTrace();
+        }
 	}
 }
