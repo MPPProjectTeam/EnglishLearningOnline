@@ -1,4 +1,4 @@
-package jdbc;
+package servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -7,12 +7,18 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import daos.StudentDao;
+import models.Student;
 
 /**
  * Servlet implementation class Login
@@ -43,29 +49,48 @@ public class Login extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		try {
+			/*StudentDao dao = new StudentDao();
+			 try {
+				List<Student> list =  dao.getAllStudentList();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+*/
 			String email = request.getParameter("email");
 			String pass = request.getParameter("password");
-			String sql = "SELECT s.* FROM test.ids s WHERE s.id = ?";
+			String sql = "SELECT s.* FROM db_englishlearningonline.tb_user s WHERE s.username = ?";
 			Class.forName("com.mysql.jdbc.Driver");
-			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/test", "root", "");
+			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/db_englishlearningonline", "root", "");
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, email);
-//			ps.setString(2, pass);
+			HttpSession session = request.getSession(true);
 			
 			ResultSet rs = ps.executeQuery();
+			int type = 0;
 			while(rs.next()){
-		         //Retrieve by column name
-				 String type  = rs.getString("type");
-				 
-				// localStorage.setItem("Name",name);
-				 String name = rs.getString("name");
-
-		         //Display values
-		         System.out.print("ID: " + type);
-		         System.out.print(", Age: " + name);
+				 type  = rs.getInt("usertype");
+				 session.setAttribute("userType", type );
+				 String name = rs.getString("username");
+				 session.setAttribute("userName", name );
 		      }
-			PrintWriter out = response.getWriter();
-			out.println("ok");
+			if(type == 200000)
+			{
+				RequestDispatcher RequetsDispatcherObj =request.getRequestDispatcher("/homeProfessor.jsp");
+				RequetsDispatcherObj.forward(request, response);	
+			}
+			else if (type == 100000)
+			{
+				RequestDispatcher RequetsDispatcherObj =request.getRequestDispatcher("/homeStudent.jsp");
+				RequetsDispatcherObj.forward(request, response);
+			}
+			else
+			{
+				PrintWriter out = response.getWriter();
+				out.println("no user name found");	
+			}
+			
+			
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
