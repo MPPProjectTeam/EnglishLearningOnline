@@ -2,6 +2,7 @@ package jdbc;
 
 public class InitDatabase {
 
+	static String sql_exists = "drop database IF EXISTS db_englishlearningonline;";
 	static String sql_create_db = "create database `db_englishlearningonline`;";
 	static String sql_use_db = "use db_englishlearningonline;";
 
@@ -9,13 +10,17 @@ public class InitDatabase {
 			+ "username char(20),usertype int(6),emailaddress char(30),courselist char(255));";
 
 	static String sql_create_tb_course = "create table tb_course(courseid int(20) not null auto_increment primary key,"
-			+ "coursename char(30),professorid char(20),professorname char(30),createdtime char(20),materiallist char(255),feedbacklist char(255);";
+			+ "coursename char(30),professorid char(20),professorname char(30),createdtime datetime DEFAULT CURRENT_TIMESTAMP;";
+	
+	static String sql_create_tb_section = "create table tb_section(sectiontid int(20) not null auto_increment primary key,"
+			+ "userid int(20),courseid int(20)),createdtime datetime DEFAULT CURRENT_TIMESTAMP;";
 
+		
 	static String sql_create_tb_material = "create table tb_material(materialid int(20) not null auto_increment primary key,"
-			+ "materialname char(60),filetype char(30),fileurl char(30),uploadedtime char(30);";
+			+ "materialname char(60),courseid int(20),filetype char(30),fileurl char(30),uploadedtime datetime DEFAULT CURRENT_TIMESTAMP;";
 
 	static String sql_create_tb_feedback = "create table tb_feedback(feedbackid int(20) not null auto_increment primary key,"
-			+ "userid int(20),usertype int(6),username char(20),comment char(255),createdtime char(30);";
+			+ "userid int(20),usertype int(6),username char(20),courseid int(20),comment char(255),createdtime datetime DEFAULT CURRENT_TIMESTAMP;";
 
 	private static volatile InitDatabase initdatabase = null;
 	private InitDatabase(){};
@@ -42,6 +47,9 @@ public class InitDatabase {
 			ret  = DbUtil.executUpdate(sql_create_tb_user, null);
 
 			ret  = DbUtil.executUpdate(sql_create_tb_course, null);
+			
+			ret  = DbUtil.executUpdate(sql_create_tb_section, null);
+			
 			ret  = DbUtil.executUpdate(sql_create_tb_material, null);
 			
 			ret  = DbUtil.executUpdate(sql_create_tb_feedback, null);
