@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.servlet.ServletException;
@@ -44,14 +45,25 @@ public class Login extends HttpServlet {
 		try {
 			String email = request.getParameter("email");
 			String pass = request.getParameter("password");
-			String sql = "insert into ids(id, name) values(?, ?)";
-			
+			String sql = "SELECT s.* FROM test.ids s WHERE s.id = ?";
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/test", "root", "");
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, email);
-			ps.setString(2, email);
-			ps.executeQuery();
+//			ps.setString(2, pass);
+			
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()){
+		         //Retrieve by column name
+				 String type  = rs.getString("type");
+				 
+				// localStorage.setItem("Name",name);
+				 String name = rs.getString("name");
+
+		         //Display values
+		         System.out.print("ID: " + type);
+		         System.out.print(", Age: " + name);
+		      }
 			PrintWriter out = response.getWriter();
 			out.println("ok");
 		} catch (ClassNotFoundException e) {
