@@ -7,7 +7,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -17,22 +16,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import daos.StudentDao;
 import jdbc.DbUtil;
-import models.Student;
 
 /**
- * Servlet implementation class Login
+ * Servlet implementation class Register
  */
 @SuppressWarnings("unused")
-@WebServlet("/Login")
-public class Login extends HttpServlet {
+@WebServlet("/Register")
+public class Register extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Login() {
+    public Register() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -52,23 +49,28 @@ public class Login extends HttpServlet {
 		// TODO Auto-generated method stub
 		try {
 
+			String userName = request.getParameter("username");
 			String email = request.getParameter("email");
 			@SuppressWarnings("unused")
-			String pass = request.getParameter("password");
-			String sql = "SELECT s.* FROM db_englishlearningonline.tb_user s WHERE s.username = ?";
-			Connection conn = DbUtil.getConnectionJama();
-			PreparedStatement ps = conn.prepareStatement(sql);
-			ps.setString(1, email);
-			ResultSet rs = ps.executeQuery();
+			String password = request.getParameter("password");
+			String userType = request.getParameter("usertype");
+			int type = userType.equals("s") ? 100000 : 200000;
 			
-			int type = 0;
-			while(rs.next()){
-				 type  = rs.getInt("usertype");
-				 HttpSession session = request.getSession(true);
-				 session.setAttribute("userType", type );
-				 String name = rs.getString("username");
-				 session.setAttribute("userName", name );
-		      }
+			String sql = "INSERT INTO db_englishlearningonline.tb_user (username, usertype, emailaddress) VALUES( '"+userName+
+					"', "+type+", '"+ email+"')";
+			Connection conn = DbUtil.getConnectionJama();
+			
+			PreparedStatement ps = conn.prepareStatement(sql);
+			/*ps.setString(1, userName);
+			ps.setInt(2, type);
+			ps.setString(3, email);*/
+			HttpSession session = request.getSession(true);
+			ps.executeUpdate(sql);
+			
+			session.setAttribute("userType", type);
+			session.setAttribute("userName", userName );
+			
+			
 			if(type == 200000)
 			{
 				RequestDispatcher RequetsDispatcherObj =request.getRequestDispatcher("/homeProfessor.jsp");
@@ -82,8 +84,10 @@ public class Login extends HttpServlet {
 			else
 			{
 				PrintWriter out = response.getWriter();
-				out.println("no user name found");	
+				out.println("couldnt create user");	
 			}
+			
+			
 		} //		doGet(request, response);
 		catch (SQLException e) {
 			// TODO Auto-generated catch block

@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Login</title>
+    <title>English Learning Online System</title>
 
     <!-- Bootstrap core CSS -->
     <link href="plus/bootstrap.min.css" rel="stylesheet">
@@ -22,20 +22,18 @@
 
     <div class="container">
 
-      <form class="form-signin">
+      <form class="form-signin" action = "Register" method = "post">
         <h2 class="form-signin-heading">Please register</h2>
-        <label for="inputEmail" class="sr-only">First Name</label>
-        <input type="text" id="inputFirstName" class="form-control" placeholder="First Name" required autofocus>
-        <label for="inputEmail" class="sr-only">Last Name</label>
-        <input type="text" id="inputLastName" class="form-control" placeholder="Last Name" required>
+        <label for="inputEmail" class="sr-only">User Name</label>
+        <input type="text" id="inputFirstName" name = "username" class="form-control" placeholder="User Name" required autofocus>
         <label for="inputEmail" class="sr-only">Email address</label>
-        <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required>
+        <input type="email" id="inputEmail" name = "email" class="form-control" placeholder="Email address" required>
         <label for="inputPassword" class="sr-only">Password</label>
-        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+        <input type="password" id="inputPassword" name = "password" class="form-control" placeholder="Password" required>
         <label for="inputPassword" class="sr-only">Choose</label>
-        <select class="custom-select d-block  w-100" id="state" required>
-          <option value="">Student</option>
-          <option>Professor</option>
+        <select class="custom-select d-block  w-100" name = "usertype" id="state" required>
+          <option value="s">Student</option>
+          <option value="p">Professor</option>
         </select>
         <br/>
         <button class="btn btn-lg btn-outline-secondary btn-block" type="submit">Register</button>
