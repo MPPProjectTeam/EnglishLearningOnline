@@ -11,6 +11,12 @@ public class DbUtil {
 	final static String dbpwd = "root";
 	
 	
+	final static String JDBC_DRIVER_JAMA = "com.mysql.jdbc.Driver";
+	final static String DB_URL_JAMA = "jdbc:mysql://localhost:3306/db_englishlearningonline";
+	final static String dbname_JAMA = "root";
+	final static String dbpwd_JAMA = "";
+	
+	
 	  public static Connection getConnection() {
 		  
 	        Connection conn = null;
@@ -18,6 +24,18 @@ public class DbUtil {
 	            InitDatabase.getInitDatabase();
 				Class.forName(JDBC_DRIVER);
 	            conn = DriverManager.getConnection(DB_URL,dbname, dbpwd);
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	        return conn;
+	    }
+	  
+	  public static Connection getConnectionJama() {
+		  
+	        Connection conn = null;
+	        try {
+				Class.forName(JDBC_DRIVER_JAMA);
+	            conn = DriverManager.getConnection(DB_URL_JAMA,dbname_JAMA, dbpwd_JAMA);
 	        } catch (Exception e) {
 	            e.printStackTrace();
 	        }
