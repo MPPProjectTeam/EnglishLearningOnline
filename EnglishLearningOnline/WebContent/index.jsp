@@ -1,6 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@page import="daos.ProfessorDao" %>
+<%@page import="daos.CourseDao" %>
+<%@page import="models.Professor" %>
+<%@page import="models.Course" %>
+<%@page import="java.util.List" %>
+<%
+	
+	ProfessorDao pd = new ProfessorDao();
+	List<Professor> allProfs = pd.getAllProfessorListJama();
+	
+	CourseDao cd = new CourseDao();
+	List<Course> allAvCourses = cd.getAvCourseListJama();
 
+%>
 <!doctype html>
 <html lang="en">
   <head>
@@ -42,11 +55,11 @@
 
       <div class="nav-scroller py-1 mb-2">
         <nav class="nav d-flex justify-content-between">
-          <a class="p-2 text-muted" href="#">Professors</a>
-          <a class="p-2 text-muted" href="#">Avialable courses</a>
-          <a class="p-2 text-muted" href="#">About us</a>
-          <a class="p-2 text-muted" href="#">License Agreement</a>
-          <a class="p-2 text-muted" href="#">Contact</a>
+          <a class="p-2 text-muted" href="#divProf">Professors</a>
+          <a class="p-2 text-muted" href="#avCourses">Avialable courses</a>
+          <a class="p-2 text-muted" href="#aboutUs">About us</a>
+          <a class="p-2 text-muted" href="#license">License Agreement</a>
+          <a class="p-2 text-muted" href="#contact">Contact</a>
         </nav>
       </div>
 
@@ -63,39 +76,32 @@
             Our beloved professors
           </h3>
       </div>
-      <div class="row mb-2">
-        <div class="col-md-6">
+      <div class="row mb-2" id="divProf">
+      <% for( int i = 0; i< allProfs.size(); i++){
+						%>
+						<div class="col-md-6">
           <div class="card flex-md-row mb-4 box-shadow h-md-250">
             <div class="card-body d-flex flex-column align-items-start">
               <strong class="d-inline-block mb-2 text-primary">Blue</strong>
               <h3 class="mb-0">
-                <a class="text-dark" href="#">Shafqat</a>
+                <a class="text-dark" href="#"><%=allProfs.get(i).getUsername() %></a>
               </h3>
               <div class="mb-1 text-muted">Nov 12</div>
-              <p class="card-text mb-auto">He is one of the most experienced professors we have.</p>
-              <a href="#">See courses</a>
+              <p class="card-text mb-auto"><%=allProfs.get(i).getUsername() %> is one of the most experienced professors we have. See what courses Available.</p>
+              <a href="login.jsp">See courses</a>
             </div>
           </div>
         </div>
-        <div class="col-md-6">
-          <div class="card flex-md-row mb-4 box-shadow h-md-250">
-            <div class="card-body d-flex flex-column align-items-start">
-              <strong class="d-inline-block mb-2 text-success">Green</strong>
-              <h3 class="mb-0">
-                <a class="text-dark" href="#">Jamsrandorj</a>
-              </h3>
-              <div class="mb-1 text-muted">Nov 11</div>
-              <p class="card-text mb-auto">He is one of the most experienced professors we have.</p>
-              <a href="#">See courses</a>
-            </div>
-          </div>
-        </div>
+						<%
+					}%>
+        
+        
       </div>
     </div>
 
     <main role="main" class="container">
       <div class="row">
-        <div class="col-md-8 blog-main">
+        <div class="col-md-8 blog-main" id="aboutUs">
           <h3 class="pb-3 mb-4 font-italic border-bottom">
             About us
           </h3>
@@ -117,7 +123,7 @@
             </ol>
             <p>Cras mattis consectetur purus sit amet fermentum. Sed posuere consectetur est at lobortis.</p>
           </div>
-          <h3 class="pb-3 mb-4 font-italic border-bottom">
+          <h3 class="pb-3 mb-4 font-italic border-bottom" id="license">
             License Agreement
           </h3>
 
@@ -151,21 +157,22 @@
             <p class="mb-0">Nothing is impossible, the word itself says “I’m possible”! —Audrey Hepburn</p>
           </div>
 
-          <div class="p-3">
+          <div class="p-3" id="avCourses" >
             <h4 class="font-italic">Avialable courses</h4>
             <ol class="list-unstyled mb-0">
-              <li><a href="#">EL101</a></li>
-              <li><a href="#">EL102</a></li>
-              <li><a href="#">TOEFL PREP</a></li>
-              <li><a href="#">IELTS PREP</a></li>
-              <li><a href="#">GRE PREP</a></li>
+            <% for(int i=0; i < allAvCourses.size(); i++){
+				%>
+				<li><a href="login.jsp"> <%=allAvCourses.get(i).getCoursename() %> </a> by <%=allAvCourses.get(i).getProfessorname() %> </li>
+				
+				<%
+			}%>
             </ol>
           </div>
 
-          <div class="p-3">
+          <div class="p-3" id="contact">
             <h4 class="font-italic">Contact us</h4>
             <ol class="list-unstyled">
-              <li><a href="#">GitHub</a></li>
+      		  <li><a href="#">Github</a></li>
               <li><a href="#">Twitter</a></li>
               <li><a href="#">Facebook</a></li>
             </ol>

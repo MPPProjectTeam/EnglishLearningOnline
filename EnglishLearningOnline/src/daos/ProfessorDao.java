@@ -1,6 +1,9 @@
 package daos;
 
 import  models.Professor;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -26,6 +29,26 @@ public class ProfessorDao {
 		}
 		return professorlist;
 	}
+	public List<Professor> getAllProfessorListJama() throws SQLException{
+
+		String sql = "select * from db_englishlearningonline.tb_user where usertype = 200000";
+		Connection conn = DbUtil.getConnectionJama();
+		PreparedStatement ps = conn.prepareStatement(sql);
+		ResultSet rs = ps.executeQuery();
+		List<Professor> professorlist=new ArrayList<Professor>();
+		Professor professor = null;
+		while(rs.next()){
+			professor=new Professor();
+			professor.setUserid(rs.getInt("userid"));
+			professor.setUsername(rs.getString("username"));
+			professor.setUsertype(rs.getInt("usertype"));
+			professor.setEmailaddress(rs.getString("emailaddress"));
+			professorlist.add(professor);
+		}
+		return professorlist;
+	}
+	
+	
 	
 	public void getProfessorInfo(Professor professor) {
 

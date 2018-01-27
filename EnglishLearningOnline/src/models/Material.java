@@ -3,52 +3,78 @@ package models;
 import java.util.Date;
 
 public class Material {
-	private Integer materialid;
-	private Integer usertype;
-	private Integer userid;
-	private String comment;
-	private Date createTime;
+	private String materialid;
+	private String materialName;
+	private String courseid;
+	private String filetype;
+	private String fileurl;
+	private Date uploadedtime;
 	
 
 	public Material(){
 
 	}
-	
-	public void setMaterialid(Integer materialid){
-		 this.materialid = materialid;
+
+
+	public String getMaterialid() {
+		return materialid;
 	}
-	public Integer getMaterialid(){
-		return this.materialid;
+
+
+	public void setMaterialid(String materialid) {
+		this.materialid = materialid;
 	}
-	
-	public void setUsertype(Integer usertype){
-		 this.usertype = usertype;
+
+
+	public String getMaterialName() {
+		return materialName;
 	}
-	public Integer getUsertype(){
-		return this.usertype;
+
+
+	public void setMaterialName(String materialName) {
+		this.materialName = materialName;
 	}
-	
-	public void setUserid(Integer userid){
-		 this.userid = userid;
+
+
+	public String getCourseid() {
+		return courseid;
 	}
-	public Integer getUserid(){
-		return this.userid;
+
+
+	public void setCourseid(String courseid) {
+		this.courseid = courseid;
+	}
+
+
+	public String getFiletype() {
+		return filetype;
+	}
+
+
+	public void setFiletype(String filetype) {
+		this.filetype = filetype;
+	}
+
+
+	public String getFileurl() {
+		return fileurl;
+	}
+
+
+	public void setFileurl(String fileurl) {
+		this.fileurl = fileurl;
+	}
+
+
+	public Date getUploadedtime() {
+		return uploadedtime;
+	}
+
+
+	public void setUploadedtime(Date uploadedtime) {
+		this.uploadedtime = uploadedtime;
 	}
 	
 
-	
-	public void setComment(String comment){
-		 this.comment = comment;
-	}
-	public String getComment(){
-		return this.comment;
-	}
-	
-	public void setCreateTime(Date createTime){
-		 this.createTime = createTime;
-	}
-	public Date getCreateTime(){
-		return this.createTime;
-	}
 	
 }

@@ -101,4 +101,26 @@ public class DbUtil {
 	        } 
 	        return result;
 	    }
+
+	    public static ResultSet executQueryJama(String sql, String[] param) {
+	    	
+	    	   Connection conn = DbUtil.getConnectionJama();
+	    	   
+	        PreparedStatement pstmt = null;
+	        ResultSet result = null;
+	        try {
+	            pstmt = conn.prepareStatement(sql);
+	            if (param != null) {
+	                for (int i = 0; i < param.length; i++) {
+	                    pstmt.setString(i + 1, param[i]);
+	                }
+	            }
+	            result = pstmt.executeQuery();
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        } finally {
+	            closeAll(pstmt, null);
+	        } 
+	        return result;
+	    }
 }

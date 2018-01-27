@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Login</title>
+    <title>English Learning Online System</title>
 
     <!-- Bootstrap core CSS -->
     <link href="plus/bootstrap.min.css" rel="stylesheet">

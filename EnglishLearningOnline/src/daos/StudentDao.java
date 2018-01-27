@@ -1,11 +1,17 @@
 package daos;
+
 import  models.Student;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 //import java.util.Date;
 import java.util.List;
+
+
+
 import jdbc.DbUtil;
 
 public class StudentDao {
@@ -78,4 +84,41 @@ public class StudentDao {
 	    		System.out.println("add student failed");
 	    }
 	}
+	
+	public static void enrollCourse(String studentId, String courseId) {
+		String sql = "INSERT INTO db_englishlearningonline.tb_section (userid, courseid) VALUES( '"+studentId+
+				"', '"+ courseId+"')";
+
+		Connection conn = DbUtil.getConnectionJama();
+		
+		PreparedStatement ps;
+		try {
+			ps = conn.prepareStatement(sql);
+			ps.executeUpdate(sql);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public static int getStudentIdByName(String userName) {
+		String sql = "SELECT s.userid FROM db_englishlearningonline.tb_user s WHERE s.username = '"+userName+"' LIMIT 1";
+		Connection conn = DbUtil.getConnectionJama();
+		int retId =0;
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next())
+			{
+				retId = rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return retId;
+		
+	}
+	
 }

@@ -68,6 +68,9 @@ public class Login extends HttpServlet {
 				 session.setAttribute("userType", type );
 				 String name = rs.getString("username");
 				 session.setAttribute("userName", name );
+				 int id = rs.getInt("userid");
+				 session.setAttribute("userId", id );
+				 
 		      }
 			if(type == 200000)
 			{

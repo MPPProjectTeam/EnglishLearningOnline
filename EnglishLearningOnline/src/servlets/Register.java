@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.mysql.jdbc.Statement;
+
 import jdbc.DbUtil;
 
 /**
@@ -60,7 +62,15 @@ public class Register extends HttpServlet {
 					"', "+type+", '"+ email+"')";
 			Connection conn = DbUtil.getConnectionJama();
 			
-			PreparedStatement ps = conn.prepareStatement(sql);
+			PreparedStatement ps = conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
+			
+			ResultSet rs = null;
+			rs = ps.getGeneratedKeys();
+			if (rs.next()) {
+			    System.out.println("Auto Generated Primary Key " + rs.getInt(1)); 
+			   } 
+			else
+				System.out.println("Obsoyo " );
 			/*ps.setString(1, userName);
 			ps.setInt(2, type);
 			ps.setString(3, email);*/

@@ -15,6 +15,10 @@
 			<servlet-name>register</servlet-name>
 			<servlet-class>servlets.Register</servlet-class>
 		</servlet>
+		<servlet>
+			<servlet-name>homeStudent</servlet-name>
+			<servlet-class>servlets.HomeStudent</servlet-class>
+		</servlet>
 
 		<servlet-mapping>
 			<servlet-name>Login</servlet-name>
@@ -23,6 +27,10 @@
 		<servlet-mapping>
 			<servlet-name>Register</servlet-name>
 			<url-pattern>/registerServlet</url-pattern>
+		</servlet-mapping>
+		<servlet-mapping>
+			<servlet-name>HomeStudent</servlet-name>
+			<url-pattern>/homeStudentServlet</url-pattern>
 		</servlet-mapping>
 	</web-app>
 </element>

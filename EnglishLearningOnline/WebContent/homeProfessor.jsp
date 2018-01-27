@@ -23,7 +23,14 @@
 <link href="plus/bootstrap.css" rel="stylesheet">
 <link href="plus/bootstrap.min.css" rel="stylesheet">
 </head>
+<%
+    session=request.getSession(false);
+    if(session.getAttribute("userName")==null)
+    {
+        response.sendRedirect("index.jsp");
+    }
 
+%>
 <body>
 
 	<div class="container">
