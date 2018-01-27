@@ -10,6 +10,38 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
+<%@page import="daos.CourseDao"%>
+<%@page import="daos.ProfessorDao"%>
+<%@page import="models.Course"%>
+<%@page import="java.util.List"%>
+<%@page import="jdbc.DbUtil" %>
+<%@page import="java.sql.Connection" %>
+<%@page import="java.sql.PreparedStatement" %>
+<%@page import="java.sql.ResultSet" %>
+<%
+	session = request.getSession(false);
+	if (session.getAttribute("userName") == null) {
+		response.sendRedirect("index.jsp");
+	}
+	String userName = session.getAttribute("userName").toString();
+
+	CourseDao cd = new CourseDao();
+	List<Course> allAvCourses = cd.getAvCourseListJama();
+	int userId = ProfessorDao.getStudentIdByName(userName);
+	List<Course> allAvCoursesByProf = cd.getAvCourseListByProfNameJama("" + userId);
+	// get Comments
+	String sql = "SELECT L.*, c.coursename FROM " + "(SELECT * FROM db_englishlearningonline.tb_feedback f "
+			+ "WHERE f.userid = (SELECT s.userid FROM db_englishlearningonline.tb_user s WHERE s.username = '"
+			+ userName + "' LIMIT 1) " + "UNION ALL " + "SELECT * FROM db_englishlearningonline.tb_feedback f "
+			+ "WHERE f.courseid IN (select c.courseid FROM db_englishlearningonline.tb_course c WHERE c.professorname = '"
+			+ userName + "' ) "
+			+ ") L, db_englishlearningonline.tb_course c WHERE c.courseid = L.courseid ORDER BY L.createdtime DESC";
+	Connection conn = DbUtil.getConnectionJama();
+	//enrolled courses
+	PreparedStatement ps = conn.prepareStatement(sql);
+	ResultSet rs = ps.executeQuery();
+	
+%>
 <title>English Learning Online System</title>
 
 <!-- Bootstrap core CSS -->
@@ -23,14 +55,7 @@
 <link href="plus/bootstrap.css" rel="stylesheet">
 <link href="plus/bootstrap.min.css" rel="stylesheet">
 </head>
-<%
-    session=request.getSession(false);
-    if(session.getAttribute("userName")==null)
-    {
-        response.sendRedirect("index.jsp");
-    }
 
-%>
 <body>
 
 	<div class="container">
@@ -45,7 +70,7 @@
 				<div class="col-4 d-flex justify-content-end align-items-center">
 
 					<div class="control-group">
-						<p>Professor Name</p>
+						<p><%=userName%></p>
 						<a class="btn btn-sm btn-outline-secondary" href="index.jsp">Log
 							out</a>
 					</div>
@@ -70,33 +95,42 @@
 				<div class="card">
 					<div class="card-body">
 						<h5 class="card-title">Register course</h5>
-						<form class="needs-validation card-text">
+						<form class="needs-validation card-text" action="HomeProfessor"
+							method="post">
 							<div class="mb-3">
 								<label for="username">Course Name</label>
 								<div class="input-group">
 									<input type="text" class="form-control" id="username"
-										placeholder="Username" required>
+										name="courseName" placeholder="CourseName" required>
 								</div>
 							</div>
 							<div class="mb-3">
-								<label for="country">Prerequisite Course</label> 							
+								<label for="country">Prerequisite Course</label> <input
+									type="hidden" id="thisField" name="formType"
+									value="CreateCourse"> <input type="hidden"
+									id="thisField" name="userName" value="<%=userName%>">
 								<div class="input-group">
-									<select
-										class="custom-select d-block w-100" id="country" required>
-										<option value="">EL101</option>
-										<option>EL102</option>
-										<option>IELTS PREP</option>
-										<option>TOEFL PREP</option>
+									<select class="custom-select d-block w-100" id="country"
+										name="preCourseId" name="preCourseId">
+										<option value="">Choose</option>
+										<%
+											for (int i = 0; i < allAvCourses.size(); i++) {
+										%>
+										<option value="<%=allAvCourses.get(i).getCourseid()%>"><%=allAvCourses.get(i).getCoursename()%></option>
+										<%
+											}
+										%>
 									</select>
 
 								</div>
 							</div>
 							<div class="custom-control custom-checkbox">
 								<input type="checkbox" class="custom-control-input"
-									id="same-address"> <label class="custom-control-label"
-									for="same-address">I accept the License and User Agreement of English Learning Online System</label>
+									id="same-address" required> <label
+									class="custom-control-label" for="same-address">I
+									accept the License and User Agreement of English Learning
+									Online System</label>
 							</div>
-
 
 							<hr class="mb-4">
 							<button class="btn btn-outline-secondary btn-lg btn-block"
@@ -113,10 +147,13 @@
 							<div class="col-md-4 mb-3">
 								<label for="state">Choose Course</label> <select
 									class="custom-select d-block w-100" id="state" required>
-									<option value="">EL101</option>
-									<option>EL102</option>
-									<option>TOEFL PREP</option>
-									<option>IELTS PREP</option>
+									<%
+										for (int i = 0; i < allAvCoursesByProf.size(); i++) {
+									%>
+									<option value="<%=allAvCoursesByProf.get(i).getCourseid()%>"><%=allAvCoursesByProf.get(i).getCoursename()%></option>
+									<%
+										}
+									%>
 								</select>
 							</div>
 							<div class="col-md-4 mb-3">
@@ -133,15 +170,19 @@
 				<div class="card">
 					<div class="card-body">
 						<h5 class="card-title">Feedbacks</h5>
-						
+
 						<form class="needs-validation card-text">
 							<div class="card mb-4 box-shadow">
 								<div class="card-header">
-									<h5 class="my-0 font-weight-normal">Jamsrandorj <small class="text-muted">12 Jan 2018 - EL101</small></h5>
+									<h5 class="my-0 font-weight-normal">
+										Jamsrandorj <small class="text-muted">12 Jan 2018 -
+											EL101</small>
+									</h5>
 								</div>
 								<div class="card-body">
-									<p>This is the first feedback test. I've just created this in order to look professional our project.</p>
-									<button type="button" class="btn btn-primary" type="submit">Reply</button> 
+									<p>This is the first feedback test. I've just created this
+										in order to look professional our project.</p>
+									<button type="button" class="btn btn-primary" type="submit">Reply</button>
 									<button type="button" class="btn" type="submit">Hide</button>
 								</div>
 							</div>
@@ -149,11 +190,15 @@
 						<form class="needs-validation card-text">
 							<div class="card mb-4 box-shadow">
 								<div class="card-header">
-									<h5 class="my-0 font-weight-normal">Xiubao <small class="text-muted">12 Jan 2018 - TOEFL PREP</small></h5>
+									<h5 class="my-0 font-weight-normal">
+										Xiubao <small class="text-muted">12 Jan 2018 - TOEFL
+											PREP</small>
+									</h5>
 								</div>
 								<div class="card-body">
-									<p>This is the first feedback test. I've just created this in order to look professional our project.</p>
-									<button type="button" class="btn btn-primary" type="submit">Reply</button> 
+									<p>This is the first feedback test. I've just created this
+										in order to look professional our project.</p>
+									<button type="button" class="btn btn-primary" type="submit">Reply</button>
 									<button type="button" class="btn" type="submit">Hide</button>
 								</div>
 							</div>
@@ -173,11 +218,13 @@
 				<div class="p-3">
 					<h4 class="font-italic">Teaching courses</h4>
 					<ol class="list-unstyled mb-0">
-						<li><a href="#">EL101</a></li>
-						<li><a href="#">EL102</a></li>
-						<li><a href="#">TOEFL PREP</a></li>
-						<li><a href="#">IELTS PREP</a></li>
-						<li><a href="#">GRE PREP</a></li>
+						<%
+							for (int i = 0; i < allAvCoursesByProf.size(); i++) {
+						%>
+						<li><a href="#"><%=allAvCoursesByProf.get(i).getCoursename()%></a></li>
+						<%
+							}
+						%>
 					</ol>
 				</div>
 

@@ -19,6 +19,10 @@
 			<servlet-name>homeStudent</servlet-name>
 			<servlet-class>servlets.HomeStudent</servlet-class>
 		</servlet>
+		<servlet>
+			<servlet-name>homeProfessor</servlet-name>
+			<servlet-class>servlets.HomeProfessor</servlet-class>
+		</servlet>
 
 		<servlet-mapping>
 			<servlet-name>Login</servlet-name>
@@ -31,6 +35,10 @@
 		<servlet-mapping>
 			<servlet-name>HomeStudent</servlet-name>
 			<url-pattern>/homeStudentServlet</url-pattern>
+		</servlet-mapping>
+		<servlet-mapping>
+			<servlet-name>HomeProfessor</servlet-name>
+			<url-pattern>/homeProfessorServlet</url-pattern>
 		</servlet-mapping>
 	</web-app>
 </element>

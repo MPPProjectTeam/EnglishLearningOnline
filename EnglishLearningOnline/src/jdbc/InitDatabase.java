@@ -10,7 +10,7 @@ public class InitDatabase {
 			+ "username char(20),usertype int(6),emailaddress char(30),createddate datetime DEFAULT CURRENT_TIMESTAMP);";
 
 	static String sql_create_tb_course = "create table tb_course(courseid int(20) not null auto_increment primary key,"
-			+ "coursename char(30),professorid char(20),professorname char(30),createdtime datetime DEFAULT CURRENT_TIMESTAMP;";
+			+ "coursename char(30),professorid char(20),professorname char(30),prerequisiteCourseId int(20) null,createdtime datetime DEFAULT CURRENT_TIMESTAMP;";
 	
 	static String sql_create_tb_section = "create table tb_section(sectionid int(20) not null auto_increment primary key,"
 			+ "userid int(20),courseid int(20),createdtime datetime DEFAULT CURRENT_TIMESTAMP;";

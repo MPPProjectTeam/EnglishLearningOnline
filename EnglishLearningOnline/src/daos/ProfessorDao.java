@@ -101,4 +101,46 @@ public class ProfessorDao {
 	    		System.out.println("add professor failed");
 	    }
 	}
+	public static void createCourse(String courseName, String profID, String profName, String PreCourseID) {
+		String sql = "";
+		if(PreCourseID == null || PreCourseID.equals(""))
+		{
+			sql = "INSERT INTO db_englishlearningonline.tb_course (coursename, professorid, professorname) " + 
+					"  VALUES( '"+courseName+"', "+profID+", '"+profName+"') ";	
+		}
+		else
+		{
+			sql = "INSERT INTO db_englishlearningonline.tb_course (coursename, professorid, professorname, prerequisiteCourseId) " + 
+					"  VALUES( '"+courseName+"', "+profID+", '"+profName+"', "+PreCourseID+") ";
+		}
+		Connection conn = DbUtil.getConnectionJama();
+		PreparedStatement ps;
+		try {
+			ps = conn.prepareStatement(sql);
+			ps.executeUpdate(sql);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	public static int getStudentIdByName(String userName) {
+		String sql = "SELECT s.userid FROM db_englishlearningonline.tb_user s WHERE s.username = '"+userName+"' LIMIT 1";
+		Connection conn = DbUtil.getConnectionJama();
+		int retId =0;
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next())
+			{
+				retId = rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return retId;
+		
+	}
+
 }
