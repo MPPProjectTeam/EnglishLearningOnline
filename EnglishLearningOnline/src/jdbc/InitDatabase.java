@@ -44,22 +44,18 @@ public class InitDatabase {
 		java.sql.Connection conn = null;		
 		try
 		{
-//			conn = DbUtil.getConnection(JDBC_DRIVER,DB_URL,dbname,dbpwd);
-//			int ret  = 0 ;
-//			ret  = DbUtil.executUpdate(conn, sql_create_db, null);
-//			
-//			ret  = DbUtil.executUpdate(conn, sql_use_db, null);
-//
-//			ret  = DbUtil.executUpdate(conn, sql_create_tb_user, null);
-//
-//			ret  = DbUtil.executUpdate(conn, sql_create_tb_course, null);
-//			ret  = DbUtil.executUpdate(conn, sql_create_tb_section, null);
-//			ret  = DbUtil.executUpdate(conn, sql_create_tb_material, null);
-//			
-//			ret  = DbUtil.executUpdate(conn, sql_create_tb_feedback, null);
-//			if (ret !=0) {
-//				System.out.println("create db error!");
-//			}
+			conn = DbUtil.getConnectionJama();
+			int ret  = 0 ;
+			ret  = DbUtil.executUpdate(sql_create_db, null);
+			ret  = DbUtil.executUpdate(sql_use_db, null);
+			ret  = DbUtil.executUpdate(sql_create_tb_user, null);
+			ret  = DbUtil.executUpdate(sql_create_tb_course, null);
+			ret  = DbUtil.executUpdate(sql_create_tb_section, null);
+			ret  = DbUtil.executUpdate(sql_create_tb_material, null);
+			ret  = DbUtil.executUpdate(sql_create_tb_feedback, null);
+			if (ret !=0) {
+				System.out.println("create db error!");
+			}
 		}catch (Exception e) {
             e.printStackTrace();
         }
