@@ -10,38 +10,37 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
+
+
 <%@page import="daos.CourseDao"%>
 <%@page import="daos.ProfessorDao"%>
+<%@page import="daos.FeedbakDao"%>
 <%@page import="models.Course"%>
 <%@page import="java.util.List"%>
-<%@page import="jdbc.DbUtil"%>
-<%@page import="java.sql.Connection"%>
-<%@page import="java.sql.PreparedStatement"%>
-<%@page import="java.sql.ResultSet"%>
+<%@page import="jdbc.DbUtil" %>
+<%@page import="java.sql.Connection" %>
+<%@page import="java.sql.PreparedStatement" %>
+<%@page import="java.sql.ResultSet" %>
 <%
 	session = request.getSession(false);
-	int temp_feed = 0;
 	if (session.getAttribute("userName") == null) {
 		response.sendRedirect("index.jsp");
 	}
 	String userName = session.getAttribute("userName").toString();
 
-	CourseDao cd = new CourseDao();
-	List<Course> allAvCourses = cd.getAvCourseListJama();
-	int userId = ProfessorDao.getStudentIdByName(userName);
-	List<Course> allAvCoursesByProf = cd.getAvCourseListByProfNameJama("" + userId);
-	// get Comments
-	String sql = "SELECT L.*, c.coursename FROM " + "(SELECT * FROM db_englishlearningonline.tb_feedback f "
-			+ "WHERE f.userid = (SELECT s.userid FROM db_englishlearningonline.tb_user s WHERE s.username = '"
-			+ userName + "' LIMIT 1) " + "UNION " + "SELECT * FROM db_englishlearningonline.tb_feedback f "
-			+ "WHERE f.courseid IN (select c.courseid FROM db_englishlearningonline.tb_course c WHERE c.professorname = '"
-			+ userName + "' ) "
-			+ ") L, db_englishlearningonline.tb_course c WHERE c.courseid = L.courseid ORDER BY L.createdtime DESC";
-	Connection conn = DbUtil.getConnectionJama();
-	//enrolled courses
-	PreparedStatement ps = conn.prepareStatement(sql);
-	ResultSet rs = ps.executeQuery();
+ 	CourseDao cd = new CourseDao();
+ 	List<Course> allAvCourses = cd.getAvCourseList();
+ 	int userId = ProfessorDao.getStudentIdByName(userName);
+ 	List<Course> allAvCoursesByProf = cd.getAvCourseListByProfName("" + userId);
+ 	ResultSet rs = FeedbakDao.GetAllFeedByProfName(userName);
+ 	int temp_feed = 0;
+	
 %>
+
+
+
+
+
 <title>English Learning Online System</title>
 
 <!-- Bootstrap core CSS -->
@@ -176,33 +175,6 @@
 						</form>
 					</div>
 				</div>
-				
-<!-- 				<div class="card"> -->
-<!-- 					<div class="card-body" > -->
-<!-- 						<h5 class="card-title">Upload Materials</h5> -->
-<!-- 						<form class="needs-validation card-text"> -->
-<!-- 							<div class="col-md-4 mb-3"> -->
-<!-- 								<label for="state">Choose Course</label> <select -->
-<!-- 									class="custom-select d-block w-100" id="state" required> -->
-<%-- 									<% --%>
-// 										for (int i = 0; i < allAvCoursesByProf.size(); i++) {
-<%-- 									%> --%>
-<%-- 									<option value="<%=allAvCoursesByProf.get(i).getCourseid()%>"><%=allAvCoursesByProf.get(i).getCoursename()%></option> --%>
-<%-- 									<% --%>
-// 										}
-<%-- 									%> --%>
-<!-- 								</select> -->
-<!-- 							</div> -->
-<!-- 							<div class="col-md-4 mb-3"> -->
-<!-- 								<label for="state">File input</label> <input type="file" -->
-<!-- 									class="form-control-file" id="exampleFormControlFile1"> -->
-<!-- 							</div> -->
-<!-- 							<hr class="mb-4"> -->
-<!-- 							<button class="btn btn-outline-secondary btn-lg btn-block" -->
-<!-- 								type="submit">Upload</button> -->
-<!-- 						</form> -->
-<!-- 					</div> -->
-<!-- 				</div> -->
 				<hr>
 				<div class="card">
 					<div class="card-body" id ="feeds">

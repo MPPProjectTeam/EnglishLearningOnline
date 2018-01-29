@@ -10,7 +10,7 @@ public class DbUtil {
 	final static String DB_URL = "jdbc:mysql://localhost:3306/db_englishlearningonline";
 	final static String DB_URL_INIT = "jdbc:mysql://localhost:3306";
 	final static String dbname = "root";
-	final static String dbpwd = "root";
+	final static String dbpwd = "";
 	final static String dbpwd_JAMA = "";
 	
 	public static void createDatabase() throws SQLException {
