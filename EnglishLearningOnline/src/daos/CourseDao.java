@@ -43,10 +43,10 @@ public class CourseDao {
 	}
 	
 
-	public List<Course> getAvCourseList() throws SQLException{
+	public List<Course> getAvCourseListJama() throws SQLException{
 
 		String sql = "select * from tb_course ";
-		Connection conn = DbUtil.getConnection();
+		Connection conn = DbUtil.getConnectionJama();
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ResultSet rs = ps.executeQuery();
 		List<Course> courselist=new ArrayList<Course>();
@@ -63,10 +63,10 @@ public class CourseDao {
 
 		return courselist;
 	}
-	public List<Course> getAvCourseListByProfName(String userId) throws SQLException{
+	public List<Course> getAvCourseListByProfNameJama(String userId) throws SQLException{
 
 		String sql = "select * from tb_course where professorid = "+userId;
-		Connection conn = DbUtil.getConnection();
+		Connection conn = DbUtil.getConnectionJama();
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ResultSet rs = ps.executeQuery();
 		List<Course> courselist=new ArrayList<Course>();

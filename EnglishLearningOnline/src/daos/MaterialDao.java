@@ -19,7 +19,7 @@ public class MaterialDao {
 	public static List<Material> getAllMaterialsByCourse(String studentId, String courseId) throws SQLException{
 		String sql = "SELECT * FROM  db_englishlearningonline.tb_material m " + 
 				"WHERE m.courseid = "+courseId;
-		Connection conn = DbUtil.getConnection();
+		Connection conn = DbUtil.getConnectionJama();
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ResultSet rs = ps.executeQuery();
 		List<Material> materials = new ArrayList<Material>();
@@ -36,19 +36,11 @@ public class MaterialDao {
 		}
 		return materials;
 	}
-	
 	public static void UploadMaterialForCourse(String mname,String ftype,String furl,String courseid,String pid) {
 
-//		String materialname = request.getParameter("materialname");
-//		String filetype = request.getParameter("filetype");
-//		String fileurl = request.getParameter("fileurl");
-//		String courseid = request.getParameter("courseid");
-//		String professorid = request.getParameter("professorid");
-	    
-		
 		String sql ="INSERT INTO db_englishlearningonline.tb_material (courseid, materialname, filetype, fileurl) "+
-		  "VALUES( "+mname+","+courseid+","+ftype+","+furl+");";
-		Connection conn = DbUtil.getConnection();
+		  "VALUES( "+courseid+", '"+mname+"','"+ftype+"','"+furl+"')";
+		Connection conn = DbUtil.getConnectionJama();
 		PreparedStatement ps;
 		try {
 			ps = conn.prepareStatement(sql);
@@ -59,19 +51,5 @@ public class MaterialDao {
 		}
 	}
 	
-	
-	
-//	public static void ReplyFeedbackByProfessor(String userId, String userName, String courseId, String comment, String replyId) {
-//		String sql ="INSERT INTO db_englishlearningonline.tb_feedback (userid, usertype, username, content, courseid, replyfeedbackid) "+
-//		  "VALUES( "+userId+", 200000, '"+userName+"', '"+comment+"', "+courseId+" , "+replyId+" )";
-//		Connection conn = DbUtil.getConnection();
-//		PreparedStatement ps;
-//		try {
-//			ps = conn.prepareStatement(sql);
-//			ps.executeUpdate(sql);
-//		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//	}
+
 }

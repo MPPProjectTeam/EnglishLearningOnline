@@ -11,6 +11,7 @@ public class DbUtil {
 	final static String DB_URL_INIT = "jdbc:mysql://localhost:3306";
 	final static String dbname = "root";
 	final static String dbpwd = "root";
+	final static String dbpwd_JAMA = "";
 	
 	public static void createDatabase() throws SQLException {
 		Connection conn = DriverManager.getConnection(DB_URL_INIT, dbname, dbpwd);
@@ -26,6 +27,18 @@ public class DbUtil {
 //	            InitDatabase.getInitDatabase();
 				Class.forName(JDBC_DRIVER);
 	            conn = DriverManager.getConnection(DB_URL,dbname, dbpwd);
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	        return conn;
+	    }
+	  public static Connection getConnectionJama() {
+		  
+	        Connection conn = null;
+	        try {
+//	            InitDatabase.getInitDatabase();
+				Class.forName(JDBC_DRIVER);
+	            conn = DriverManager.getConnection(DB_URL,dbname, dbpwd_JAMA);
 	        } catch (Exception e) {
 	            e.printStackTrace();
 	        }

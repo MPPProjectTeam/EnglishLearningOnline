@@ -14,33 +14,33 @@
 <%@page import="daos.ProfessorDao"%>
 <%@page import="models.Course"%>
 <%@page import="java.util.List"%>
-<%@page import="jdbc.DbUtil" %>
-<%@page import="java.sql.Connection" %>
-<%@page import="java.sql.PreparedStatement" %>
-<%@page import="java.sql.ResultSet" %>
+<%@page import="jdbc.DbUtil"%>
+<%@page import="java.sql.Connection"%>
+<%@page import="java.sql.PreparedStatement"%>
+<%@page import="java.sql.ResultSet"%>
 <%
 	session = request.getSession(false);
+	int temp_feed = 0;
 	if (session.getAttribute("userName") == null) {
 		response.sendRedirect("index.jsp");
 	}
 	String userName = session.getAttribute("userName").toString();
 
- 	CourseDao cd = new CourseDao();
- 	List<Course> allAvCourses = cd.getAvCourseList();
- 	int userId = ProfessorDao.getStudentIdByName(userName);
- 	List<Course> allAvCoursesByProf = cd.getAvCourseListByProfName("" + userId);
-// 	// get Comments
-// 	String sql = "SELECT L.*, c.coursename FROM " + "(SELECT * FROM db_englishlearningonline.tb_feedback f "
-// 			+ "WHERE f.userid = (SELECT s.userid FROM db_englishlearningonline.tb_user s WHERE s.username = '"
-// 			+ userName + "' LIMIT 1) " + "UNION ALL " + "SELECT * FROM db_englishlearningonline.tb_feedback f "
-// 			+ "WHERE f.courseid IN (select c.courseid FROM db_englishlearningonline.tb_course c WHERE c.professorname = '"
-// 			+ userName + "' ) "
-// 			+ ") L, db_englishlearningonline.tb_course c WHERE c.courseid = L.courseid ORDER BY L.createdtime DESC";
-// 	Connection conn = DbUtil.getConnection();
-// 	//enrolled courses
-// 	PreparedStatement ps = conn.prepareStatement(sql);
-// 	ResultSet rs = ps.executeQuery();
-	
+	CourseDao cd = new CourseDao();
+	List<Course> allAvCourses = cd.getAvCourseListJama();
+	int userId = ProfessorDao.getStudentIdByName(userName);
+	List<Course> allAvCoursesByProf = cd.getAvCourseListByProfNameJama("" + userId);
+	// get Comments
+	String sql = "SELECT L.*, c.coursename FROM " + "(SELECT * FROM db_englishlearningonline.tb_feedback f "
+			+ "WHERE f.userid = (SELECT s.userid FROM db_englishlearningonline.tb_user s WHERE s.username = '"
+			+ userName + "' LIMIT 1) " + "UNION " + "SELECT * FROM db_englishlearningonline.tb_feedback f "
+			+ "WHERE f.courseid IN (select c.courseid FROM db_englishlearningonline.tb_course c WHERE c.professorname = '"
+			+ userName + "' ) "
+			+ ") L, db_englishlearningonline.tb_course c WHERE c.courseid = L.courseid ORDER BY L.createdtime DESC";
+	Connection conn = DbUtil.getConnectionJama();
+	//enrolled courses
+	PreparedStatement ps = conn.prepareStatement(sql);
+	ResultSet rs = ps.executeQuery();
 %>
 <title>English Learning Online System</title>
 
@@ -54,6 +54,11 @@
 <link href="plus/blog.css" rel="stylesheet">
 <link href="plus/bootstrap.css" rel="stylesheet">
 <link href="plus/bootstrap.min.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://getbootstrap.com/dist/js/bootstrap.min.js"></script>
+<script src="https://getbootstrap.com/assets/js/docs.min.js"></script>
+
+
 </head>
 
 <body>
@@ -80,9 +85,9 @@
 
 		<div class="nav-scroller py-1 mb-2">
 			<nav class="nav d-flex justify-content-between">
-				<a class="p-2 text-muted" href="#">Create Course</a> <a
-					class="p-2 text-muted" href="#">Upload Materials</a> <a
-					class="p-2 text-muted" href="#">Feedbacks</a>
+				<a class="p-2 text-muted" href="#regCourse">Create Course</a> <a
+					class="p-2 text-muted" href="#uploadMat">Upload Materials</a> <a
+					class="p-2 text-muted" href="#feeds">Feedbacks</a>
 			</nav>
 		</div>
 		<hr>
@@ -93,7 +98,7 @@
 		<div class="row">
 			<div class="col-md-8 blog-main">
 				<div class="card">
-					<div class="card-body">
+					<div class="card-body" id="regCourse">
 						<h5 class="card-title">Register course</h5>
 						<form class="needs-validation card-text" action="HomeProfessor"
 							method="post">
@@ -140,17 +145,18 @@
 					</div>
 				</div>
 				<hr>
-				<div class="card">
+				<div class="card" id="uploadMat">
 					<div class="card-body">
 						<h5 class="card-title">Upload Materials</h5>
-						<form class="needs-validation card-text" method="post" action="HomeProfessor?formType=UploadMaterials" enctype="multipart/form-data">
-					<!-- 	  <input type="hidden" id="thisField" name="formType"
-									value="UploadMaterials"/> -->
+						<form class="needs-validation card-text" method="post" action="HomeProfessor?formType=UploadMaterials&userName=<%=userName %>" enctype="multipart/form-data">
+					 	  <input type="hidden" id="thisField" name="formType" value="UploadMaterials"/>
+					 	  <input type="hidden" id="thisField" name="userName" value="<%=userName %>"/>
+					 	  
 				
 					
-						<%-- 	<div class="col-md-4 mb-3">
+						<div class="col-md-4 mb-3">
 								<label for="state">Choose Course</label> <select
-									class="custom-select d-block w-100" id="state" required>
+									class="custom-select d-block w-100" name = "courseid" id="state" required>
 									<%
 										for (int i = 0; i < allAvCoursesByProf.size(); i++) {
 									%>
@@ -159,7 +165,7 @@
 										}
 									%>
 								</select>
-							</div> --%>
+							</div>
 							<div class="col-md-4 mb-3">
 								<label for="state">File input</label> <input type="file" name="file"
 									class="form-control-file" id="exampleFormControlFile1">
@@ -170,43 +176,99 @@
 						</form>
 					</div>
 				</div>
+				
+<!-- 				<div class="card"> -->
+<!-- 					<div class="card-body" > -->
+<!-- 						<h5 class="card-title">Upload Materials</h5> -->
+<!-- 						<form class="needs-validation card-text"> -->
+<!-- 							<div class="col-md-4 mb-3"> -->
+<!-- 								<label for="state">Choose Course</label> <select -->
+<!-- 									class="custom-select d-block w-100" id="state" required> -->
+<%-- 									<% --%>
+// 										for (int i = 0; i < allAvCoursesByProf.size(); i++) {
+<%-- 									%> --%>
+<%-- 									<option value="<%=allAvCoursesByProf.get(i).getCourseid()%>"><%=allAvCoursesByProf.get(i).getCoursename()%></option> --%>
+<%-- 									<% --%>
+// 										}
+<%-- 									%> --%>
+<!-- 								</select> -->
+<!-- 							</div> -->
+<!-- 							<div class="col-md-4 mb-3"> -->
+<!-- 								<label for="state">File input</label> <input type="file" -->
+<!-- 									class="form-control-file" id="exampleFormControlFile1"> -->
+<!-- 							</div> -->
+<!-- 							<hr class="mb-4"> -->
+<!-- 							<button class="btn btn-outline-secondary btn-lg btn-block" -->
+<!-- 								type="submit">Upload</button> -->
+<!-- 						</form> -->
+<!-- 					</div> -->
+<!-- 				</div> -->
 				<hr>
 				<div class="card">
-					<div class="card-body">
+					<div class="card-body" id ="feeds">
 						<h5 class="card-title">Feedbacks</h5>
-
-						<form class="needs-validation card-text">
-							<div class="card mb-4 box-shadow">
-								<div class="card-header">
-									<h5 class="my-0 font-weight-normal">
-										Jamsrandorj <small class="text-muted">12 Jan 2018 -
-											EL101</small>
-									</h5>
-								</div>
-								<div class="card-body">
-									<p>This is the first feedback test. I've just created this
-										in order to look professional our project.</p>
-									<button type="button" class="btn btn-primary" type="submit">Reply</button>
-									<button type="button" class="btn" type="submit">Hide</button>
+						<%
+							while (rs.next()) {
+								temp_feed++;
+						%>
+						<form class="needs-validation card-text" action = "HomeProfessor" method = "post">
+							<div class="card-body">
+								<div class="card mb-4 box-shadow">
+									<div class="card-header">
+										<h5 class="my-0 font-weight-normal">
+											<%=rs.getString("username")%>
+											<small class="text-muted"><%=rs.getString("createdtime")%>
+												- <%=rs.getString("coursename")%></small>
+											<%
+												if (rs.getString("replyfeedbackid") != null) {
+											%>
+											<p class="d-inline-block mb-2 text-primary">Your
+												Reply</p>
+											<%
+												}
+											%>
+										</h5>
+									</div>
+									<div class="card-body">
+										<p><%=rs.getString("content")%></p>
+										<%
+											if (rs.getString("replyfeedbackid") == null) {
+										%>
+										<button type="button" class="btn btn-outline-primary"
+											data-toggle="collapse" href="<%="#collapse" + temp_feed%>"
+											role="button" aria-expanded="false"
+											aria-controls="<%="collapse" + temp_feed%>">Reply</button>
+										<br />
+										<div class="collapse" id="<%="collapse" + temp_feed%>">
+											<br />
+											<div class="card card-body">
+												<form action="HomeProfessor" method="post">
+													<div class="form-group">
+														 <input type="hidden" id="thisField" name="userName" value="<%=userName%>">
+														 <input type="hidden" id="thisField" name="CourseIDFeed" value="<%=rs.getString("courseid")%>">
+														 <input type="hidden" id="thisField" name="ReplyId" value="<%=rs.getString("feedbackid")%>">
+														 <input type="hidden" id="thisField" name="formType" value="Feedback">	
+													</div>
+													<div class="form-group">
+														<label for="exampleFormControlTextarea1">Comment</label>
+														<textarea class="form-control"
+															id="exampleFormControlTextarea1" rows="3" name="comment"></textarea>
+													</div>
+													<hr class="mb-4">
+													<button class="btn btn-outline-secondary btn-lg btn-block" type="submit">Reply</button>
+												</form>
+											</div>
+										</div>
+										<%
+											}
+										%>
+									</div>
 								</div>
 							</div>
 						</form>
-						<form class="needs-validation card-text">
-							<div class="card mb-4 box-shadow">
-								<div class="card-header">
-									<h5 class="my-0 font-weight-normal">
-										Xiubao <small class="text-muted">12 Jan 2018 - TOEFL
-											PREP</small>
-									</h5>
-								</div>
-								<div class="card-body">
-									<p>This is the first feedback test. I've just created this
-										in order to look professional our project.</p>
-									<button type="button" class="btn btn-primary" type="submit">Reply</button>
-									<button type="button" class="btn" type="submit">Hide</button>
-								</div>
-							</div>
-						</form>
+						<%
+							}
+						%>
 					</div>
 				</div>
 				<hr>

@@ -56,7 +56,7 @@ public class Login extends HttpServlet {
 			@SuppressWarnings("unused")
 			String pass = request.getParameter("password");
 			String sql = "SELECT s.* FROM db_englishlearningonline.tb_user s WHERE s.username = ?";
-			Connection conn = DbUtil.getConnection();
+			Connection conn = DbUtil.getConnectionJama();
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, email);
 			ResultSet rs = ps.executeQuery();

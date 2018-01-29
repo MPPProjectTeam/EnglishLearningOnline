@@ -60,7 +60,7 @@ public class Register extends HttpServlet {
 			
 			String sql = "INSERT INTO db_englishlearningonline.tb_user (username, usertype, emailaddress) VALUES( '"+userName+
 					"', "+type+", '"+ email+"')";
-			Connection conn = DbUtil.getConnection();
+			Connection conn = DbUtil.getConnectionJama();
 			
 			PreparedStatement ps = conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
 			
@@ -80,6 +80,7 @@ public class Register extends HttpServlet {
 			session.setAttribute("userType", type);
 			session.setAttribute("userName", userName );
 			
+			
 			if(type == 200000)
 			{
 				RequestDispatcher RequetsDispatcherObj =request.getRequestDispatcher("/homeProfessor.jsp");
@@ -94,7 +95,9 @@ public class Register extends HttpServlet {
 			{
 				PrintWriter out = response.getWriter();
 				out.println("couldnt create user");	
-			}		
+			}
+			
+			
 		} //		doGet(request, response);
 		catch (SQLException e) {
 			// TODO Auto-generated catch block
