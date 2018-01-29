@@ -86,21 +86,20 @@ public class HomeProfessor extends HttpServlet {
 			System.out.println("post---UploadMaterials");
 			//1.store the file firsts
 			uploadfile(request,response);
-//			String materialname = request.getParameter("materialname");
-//			String filetype = request.getParameter("filetype");
-//			String fileurl = request.getParameter("fileurl");
-//			String courseid = request.getParameter("courseid");
-//			String professorid = request.getParameter("professorid");
-			//1.store the file first
-			
-//			//2.intert the record to the tb_material
-//			MaterialDao.UploadMaterialForCourse(materialname, filetype, fileurl, courseid, professorid);
 		}
 		
 		RequestDispatcher RequetsDispatcherObj =request.getRequestDispatcher("/homeProfessor.jsp");
 		RequetsDispatcherObj.forward(request, response);
 	}
-
+	public void storefileur(HttpServletRequest request,
+            HttpServletResponse response) throws IOException, ServletException{
+		String materialname = request.getParameter("materialname");
+		String filetype = request.getParameter("filetype");
+		String fileurl = request.getParameter("fileurl");
+		String courseid = request.getParameter("courseid");
+		String professorid = request.getParameter("professorid");
+		MaterialDao.UploadMaterialForCourse(materialname, filetype, fileurl, courseid, professorid);
+	}
 	public void uploadfile(HttpServletRequest request,
             HttpServletResponse response) throws IOException, ServletException{
 
@@ -161,8 +160,11 @@ public class HomeProfessor extends HttpServlet {
 	 
 	                        // saves the file on disk
 	                        item.write(storeFile);
+	                        
 	                        request.setAttribute("message",
 	                            "Upload has been done successfully!");
+	                		   //2.intert the record to the tb_material
+	                        storefileur(request,response);
 	                    }
 	                }
 	            }
