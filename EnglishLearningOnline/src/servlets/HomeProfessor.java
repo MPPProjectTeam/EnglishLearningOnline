@@ -25,16 +25,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
  
 import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-
 
 /**
  * Servlet implementation class HomeProfessor
  */
 @WebServlet("/HomeProfessor")
 public class HomeProfessor extends HttpServlet {
-	
 	private static final long serialVersionUID = 1L;
 	// location to store file uploaded
 	private static final String UPLOAD_DIRECTORY = "upload";
@@ -42,7 +41,13 @@ public class HomeProfessor extends HttpServlet {
 	private static final int MEMORY_THRESHOLD   = 1024 * 1024 * 3;  // 3MB
 	private static final int MAX_FILE_SIZE      = 1024 * 1024 * 40; // 40MB
 	private static final int MAX_REQUEST_SIZE   = 1024 * 1024 * 50; // 50MB
+	String materialname =  "";
+	String filetype =  "";
+	String fileurl =  "";
+	String courseid =  "";
+	String professorid =  "";
 
+       
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -66,14 +71,11 @@ public class HomeProfessor extends HttpServlet {
 		// TODO Auto-generated method stub
 		String formType = request.getParameter("formType");
 		String userName = request.getParameter("userName");
-
-
 		if(formType.equals("CreateCourse"))
 		{
 			String courseName = request.getParameter("courseName");
 			String preCourseId = request.getParameter("preCourseId");
 			int userId = ProfessorDao.getStudentIdByName(userName);
-			//StudentDao.enrollCourse(""+userId, courseID);	
 			ProfessorDao.createCourse(courseName, ""+userId, userName, preCourseId);
 		}
 		else if(formType.equals("Feedback")) {
@@ -82,22 +84,31 @@ public class HomeProfessor extends HttpServlet {
 			String replyID = request.getParameter("ReplyId");
 			int userId = StudentDao.getStudentIdByName(userName);
 			FeedbakDao.ReplyFeedbackByProfessor(""+userId, userName, courseID,comment, replyID);
-		}else if(formType.equals("UploadMaterials")) {
-			System.out.println("post---UploadMaterials");
-			//1.store the file firsts
-			uploadfile(request,response);
 		}
-		
+		else if(formType.equals("UploadMaterials")) {
+			
+			/*try {
+				List<FileItem> multiparts = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+				for(FileItem item : multiparts){
+					if(item.getFieldName().equals("courseid"))
+						courseid = item.getString();
+				}
+			} catch (FileUploadException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}*/
+			
+			int userId = ProfessorDao.getStudentIdByName(userName);
+			professorid = ""+userId;
+			System.out.println("post---UploadMaterials");
+			uploadfile(request,response);
+
+		}
 		RequestDispatcher RequetsDispatcherObj =request.getRequestDispatcher("/homeProfessor.jsp");
 		RequetsDispatcherObj.forward(request, response);
 	}
 	public void storefileur(HttpServletRequest request,
             HttpServletResponse response) throws IOException, ServletException{
-		String materialname = request.getParameter("materialname");
-		String filetype = request.getParameter("filetype");
-		String fileurl = request.getParameter("fileurl");
-		String courseid = request.getParameter("courseid");
-		String professorid = request.getParameter("professorid");
 		MaterialDao.UploadMaterialForCourse(materialname, filetype, fileurl, courseid, professorid);
 	}
 	public void uploadfile(HttpServletRequest request,
@@ -146,14 +157,22 @@ public class HomeProfessor extends HttpServlet {
 	            // parses the request's content to extract file data
 	            @SuppressWarnings("unchecked")
 	            List<FileItem> formItems = upload.parseRequest(request);
-	 
+	
 	            if (formItems != null && formItems.size() > 0) {
 	                // iterates over form's fields
 	                for (FileItem item : formItems) {
 	                    // processes only fields that are not form fields
+	                	    if(item.getFieldName().equals("courseid"))
+							courseid = item.getString();
 	                    if (!item.isFormField()) {
 	                        String fileName = new File(item.getName()).getName();
+	                        String fileExt = fileName.substring(fileName.lastIndexOf(".") + 1);
+	                        
 	                        String filePath = uploadPath + File.separator + fileName;
+	                        
+	                        materialname = fileName;
+	                        filetype = fileExt;
+	                        fileurl = filePath;
 	                        
 	                        System.out.println("filePath:" + filePath);
 	                        File storeFile = new File(filePath);

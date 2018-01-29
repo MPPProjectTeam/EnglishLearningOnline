@@ -70,11 +70,10 @@
                 <small class="text-muted">uploaded on : <%=allMats.get(i).getUploadedtime() %> </small>
               </div>
               <span class="text-muted">file extension: <%=allMats.get(i).getFiletype() %></span>
-              <button type="button" class="btn btn-outline-success" onclick="window.open('<%=allMats.get(i).getFileurl() %>')">Download</button>
+              <button type="button" class="btn btn-outline-success" onclick="window.open('file://<%=allMats.get(i).getFileurl() %>')">Download</button>
             </li>
 						<%
 					}%>
-          
             
             
             

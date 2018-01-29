@@ -7,19 +7,16 @@
 <%@page import="java.util.List" %>
 <%@page import="jdbc.DbUtil" %>
 <%@page import="jdbc.InitDatabase" %>
-
 <%
-	
 	//debug;
-	InitDatabase.getInitDatabase().drop_db();
-	InitDatabase.getInitDatabase().create_db();
-	//
-
+	//InitDatabase.getInitDatabase().drop_db();
+	//InitDatabase.getInitDatabase().create_db();
+	
 	ProfessorDao pd = new ProfessorDao();
-	List<Professor> allProfs = pd.getAllProfessorList();
-
+	List<Professor> allProfs = pd.getAllProfessorListJama();
+	
 	CourseDao cd = new CourseDao();
-	List<Course> allAvCourses = cd.getAvCourseList();
+	List<Course> allAvCourses = cd.getAvCourseListJama();
 
 %>
 <!doctype html>

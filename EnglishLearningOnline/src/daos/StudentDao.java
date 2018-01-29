@@ -89,7 +89,7 @@ public class StudentDao {
 		String sql = "INSERT INTO db_englishlearningonline.tb_section (userid, courseid) VALUES( '"+studentId+
 				"', '"+ courseId+"')";
 
-		Connection conn = DbUtil.getConnection();
+		Connection conn = DbUtil.getConnectionJama();
 		
 		PreparedStatement ps;
 		try {
@@ -104,7 +104,7 @@ public class StudentDao {
 	
 	public static int getStudentIdByName(String userName) {
 		String sql = "SELECT s.userid FROM db_englishlearningonline.tb_user s WHERE s.username = '"+userName+"' LIMIT 1";
-		Connection conn = DbUtil.getConnection();
+		Connection conn = DbUtil.getConnectionJama();
 		int retId =0;
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -120,7 +120,6 @@ public class StudentDao {
 		return retId;
 		
 	}
-	
 	public ResultSet getEnrolledCoursesByName(String userName) throws SQLException{
 		String sql = "SELECT c.coursename, c.courseid FROM db_englishlearningonline.tb_section sc, db_englishlearningonline.tb_course c "
 				+"WHERE sc.courseid = c.courseid AND sc.userid =" 
@@ -132,7 +131,6 @@ public class StudentDao {
 		ResultSet rs1 = ps1.executeQuery();
 		return  rs1;
 	}
-	
 	public ResultSet getAvialableCoursesByName(String userName) throws SQLException{
 		String sql2 ="SELECT c.coursename, c.courseid FROM db_englishlearningonline.tb_course c "+
 				"WHERE c.courseid NOT IN (SELECT sc.courseid FROM db_englishlearningonline.tb_section sc "+
@@ -142,7 +140,6 @@ public class StudentDao {
 		ResultSet rs2 = ps2.executeQuery();
 		return  rs2;
 	}
-	
 	public  ResultSet getCommentsByName(String userName) throws SQLException{
 		String sql3 = "SELECT L.*, c.coursename FROM "+ 
 		        "(SELECT * FROM db_englishlearningonline.tb_feedback f "+
@@ -159,4 +156,5 @@ public class StudentDao {
 		ResultSet rs3 = ps3.executeQuery();
 		return  rs3;
 	}
+	
 }

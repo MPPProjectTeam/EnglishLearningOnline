@@ -29,6 +29,7 @@
 <%@page import="java.sql.ResultSet" %>
 <%@page import="daos.StudentDao" %>
 
+
 <%
 	
     session=request.getSession(false);
@@ -39,8 +40,56 @@
 	String userName = session.getAttribute("userName").toString();
 	StudentDao cd = new StudentDao();
 	ResultSet rs1 = cd.getEnrolledCoursesByName(userName);
+	ResultSet rs5 = cd.getEnrolledCoursesByName(userName);
+	ResultSet rs4 = cd.getEnrolledCoursesByName(userName);
 	ResultSet rs2 = cd.getAvialableCoursesByName(userName);
 	ResultSet rs3 = cd.getCommentsByName(userName);
+	
+%>
+
+<%
+	
+//     session=request.getSession(false);
+//     if(session.getAttribute("userName")==null)
+//     {
+//         response.sendRedirect("index.jsp");
+//     }
+// 	String userName = session.getAttribute("userName").toString();
+// // 	get Enrolled courses
+// 	String sql = "SELECT c.coursename, c.courseid FROM db_englishlearningonline.tb_section sc, db_englishlearningonline.tb_course c "
+// 			+"WHERE sc.courseid = c.courseid AND sc.userid =" 
+// 			+"(SELECT s.userid FROM db_englishlearningonline.tb_user s WHERE s.username = '"+userName+"' LIMIT 1)";
+// //  get Avialable courses
+// 	String sql1 ="SELECT c.coursename, c.courseid FROM db_englishlearningonline.tb_course c "+
+// 	"WHERE c.courseid NOT IN (SELECT sc.courseid FROM db_englishlearningonline.tb_section sc "+
+// 	"WHERE sc.userid = (SELECT s.userid FROM db_englishlearningonline.tb_user s WHERE s.username = '"+userName+"' LIMIT 1))";
+
+// // get Comments
+// 	String sql2 = "SELECT L.*, c.coursename FROM "+ 
+// 	        "(SELECT * FROM db_englishlearningonline.tb_feedback f "+
+// 			"WHERE f.userid = (SELECT s.userid FROM db_englishlearningonline.tb_user s WHERE s.username = '"+userName+"' LIMIT 1) "+
+// 			"UNION	ALL "+		
+// 			"SELECT * FROM db_englishlearningonline.tb_feedback f1 "+
+// 			"WHERE f1.replyfeedbackid IN ( "+
+// 			"SELECT f2.feedbackid FROM db_englishlearningonline.tb_feedback f2 "+
+// 			"WHERE f2.userid = (SELECT s.userid FROM db_englishlearningonline.tb_user s WHERE s.username = '"+userName+"' LIMIT 1)) "+
+// 			") L, db_englishlearningonline.tb_course c WHERE c.courseid = L.courseid ORDER BY L.createdtime DESC";
+	
+// 	Connection conn = DbUtil.getConnectionJama();
+// 	//enrolled courses
+// 	PreparedStatement ps = conn.prepareStatement(sql);
+// 	PreparedStatement ps1 = conn.prepareStatement(sql);
+// 	PreparedStatement ps3 = conn.prepareStatement(sql);
+// 	//AV courses
+// 	PreparedStatement ps2 = conn.prepareStatement(sql1);
+// 	//comments
+// 	PreparedStatement ps4 = conn.prepareStatement(sql2);
+	
+// 	ResultSet rs = ps.executeQuery();
+// 	ResultSet rs1 = ps1.executeQuery();
+// 	ResultSet rs3 = ps3.executeQuery();
+// 	ResultSet rs2 = ps2.executeQuery();
+// 	ResultSet rs4 = ps4.executeQuery();
 	
 %>
 <body>
@@ -160,9 +209,9 @@
 											<input type="hidden" id="thisField" name="userName" value="<%=userName %>">
 											<input type="hidden" id="thisField" name="formType" value="Feedback">
 											<select class="form-control" id="exampleFormControlSelect1" name ="CourseIDFeed">
-												<% while(rs1.next()){
+												<% while(rs5.next()){
 										%>
-										<option value="<%=rs1.getString("courseid") %>"><%=rs1.getString("coursename") %></option>	
+										<option value="<%=rs5.getString("courseid") %>"><%=rs5.getString("coursename") %></option>	
 										<%
 									}%>
 											</select>
@@ -199,7 +248,7 @@
 													<%=rs3.getString("username") %> <small class="text-muted"><%=rs3.getString("createdtime") %> -
 														<%=rs3.getString("coursename") %></small>
 														<% if (rs3.getString("replyfeedbackid")!=null) { %> 
-     															<strong class="d-inline-block mb-2 text-primary">Reply</strong>
+     															<p class="d-inline-block mb-2 text-primary">replied</p>
    														<% } %>
 												</h5>
 											</div>
@@ -230,9 +279,9 @@
 			<div class="p-3">
 				<h4 class="font-italic">Enrolled courses</h4>
 				<ol class="list-unstyled mb-0">
-					<% while(rs1.next()){
+					<% while(rs4.next()){
 						%>
-						<li><a href="#"><%=rs1.getString("coursename") %></a></li>	
+						<li><a href="#"><%=rs4.getString("coursename") %></a></li>	
 						<%
 					}%>
 					

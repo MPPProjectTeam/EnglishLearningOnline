@@ -40,7 +40,17 @@ public class InitDatabase {
             }
         }
         return initdatabase;
-    } 
+    }
+	public static InitDatabase getInitDatabaseJama(){
+        if(initdatabase == null){
+            synchronized (InitDatabase.class){
+                if(initdatabase == null){
+                	initdatabase = new InitDatabase();
+                }
+            }
+        }
+        return initdatabase;
+    }
 	
 	public static boolean exists_db(String dabasename) {
 		int ret;
