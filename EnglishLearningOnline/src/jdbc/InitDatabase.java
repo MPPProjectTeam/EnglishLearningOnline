@@ -13,7 +13,7 @@ public class InitDatabase {
 			+ "coursename char(30),professorid char(20),professorname char(30),prerequisiteCourseId int(20) null,createdtime datetime DEFAULT CURRENT_TIMESTAMP;";
 	
 	static String sql_create_tb_section = "create table tb_section(sectionid int(20) not null auto_increment primary key,"
-			+ "userid int(20),courseid int(20),createdtime datetime DEFAULT CURRENT_TIMESTAMP;";
+			+ "userid int(20),courseid int(20),createdtime datetime DEFAULT CURRENT_TIMESTAMP);";
 	
 	static String sql_create_tb_material = "create table tb_material(materialid int(20) not null auto_increment primary key,"
 			+ " courseid int(20), materialname char(60),filetype char(30),fileurl char(30),uploadedtime datetime DEFAULT CURRENT_TIMESTAMP;";
