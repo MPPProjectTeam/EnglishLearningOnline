@@ -121,4 +121,42 @@ public class StudentDao {
 		
 	}
 	
+	public ResultSet getEnrolledCoursesByName(String userName) throws SQLException{
+		String sql = "SELECT c.coursename, c.courseid FROM db_englishlearningonline.tb_section sc, db_englishlearningonline.tb_course c "
+				+"WHERE sc.courseid = c.courseid AND sc.userid =" 
+				+"(SELECT s.userid FROM db_englishlearningonline.tb_user s WHERE s.username = '"+userName+"' LIMIT 1)";
+
+		Connection conn = DbUtil.getConnection();
+		//enrolled courses
+		PreparedStatement ps1 = conn.prepareStatement(sql);
+		ResultSet rs1 = ps1.executeQuery();
+		return  rs1;
+	}
+	
+	public ResultSet getAvialableCoursesByName(String userName) throws SQLException{
+		String sql2 ="SELECT c.coursename, c.courseid FROM db_englishlearningonline.tb_course c "+
+				"WHERE c.courseid NOT IN (SELECT sc.courseid FROM db_englishlearningonline.tb_section sc "+
+				"WHERE sc.userid = (SELECT s.userid FROM db_englishlearningonline.tb_user s WHERE s.username = '"+userName+"' LIMIT 1))";
+		Connection conn = DbUtil.getConnection();
+		PreparedStatement ps2 = conn.prepareStatement(sql2);
+		ResultSet rs2 = ps2.executeQuery();
+		return  rs2;
+	}
+	
+	public  ResultSet getCommentsByName(String userName) throws SQLException{
+		String sql3 = "SELECT L.*, c.coursename FROM "+ 
+		        "(SELECT * FROM db_englishlearningonline.tb_feedback f "+
+				"WHERE f.userid = (SELECT s.userid FROM db_englishlearningonline.tb_user s WHERE s.username = '"+userName+"' LIMIT 1) "+
+				"UNION	ALL "+		
+				"SELECT * FROM db_englishlearningonline.tb_feedback f1 "+
+				"WHERE f1.replyfeedbackid IN ( "+
+				"SELECT f2.feedbackid FROM db_englishlearningonline.tb_feedback f2 "+
+				"WHERE f2.userid = (SELECT s.userid FROM db_englishlearningonline.tb_user s WHERE s.username = '"+userName+"' LIMIT 1)) "+
+				") L, db_englishlearningonline.tb_course c WHERE c.courseid = L.courseid ORDER BY L.createdtime DESC";
+	
+		Connection conn = DbUtil.getConnection();
+		PreparedStatement ps3 = conn.prepareStatement(sql3);
+		ResultSet rs3 = ps3.executeQuery();
+		return  rs3;
+	}
 }
