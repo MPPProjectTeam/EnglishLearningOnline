@@ -11,9 +11,9 @@
 <%
 	
 	//debug;
-	//InitDatabase.getInitDatabase().drop_db();
+	InitDatabase.getInitDatabase().drop_db();
 	InitDatabase.getInitDatabase().create_db();
-	InitDatabase.getInitDatabase().addTestData();
+	//
 
 	ProfessorDao pd = new ProfessorDao();
 	List<Professor> allProfs = pd.getAllProfessorList();

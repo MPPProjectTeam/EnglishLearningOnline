@@ -1,25 +1,27 @@
 package jdbc;
 
+import java.sql.SQLException;
+
 public class InitDatabase {
 
 	static String sql_drop_db = "drop database IF EXISTS db_englishlearningonline;";
 	static String sql_create_db = "create database db_englishlearningonline;";
 	static String sql_use_db = "use db_englishlearningonline;";
 
-	static String sql_create_tb_user = "create table tb_user(userid int(20) not null auto_increment primary key,"
+	static String sql_create_tb_user = "create table db_englishlearningonline.tb_user(userid int(20) not null auto_increment primary key,"
 			+ "username char(20),usertype int(6),emailaddress char(30),createddate datetime DEFAULT CURRENT_TIMESTAMP);";
 
-	static String sql_create_tb_course = "create table tb_course(courseid int(20) not null auto_increment primary key,"
-			+ "coursename char(30),professorid char(20),professorname char(30),prerequisiteCourseId int(20) null,createdtime datetime DEFAULT CURRENT_TIMESTAMP;";
+	static String sql_create_tb_course = "create table db_englishlearningonline.tb_course(courseid int(20) not null auto_increment primary key,"
+			+ "coursename char(30),professorid char(20),professorname char(30),prerequisiteCourseId int(20) null,createdtime datetime DEFAULT CURRENT_TIMESTAMP);";
 	
-	static String sql_create_tb_section = "create table tb_section(sectionid int(20) not null auto_increment primary key,"
+	static String sql_create_tb_section = "create table db_englishlearningonline.tb_section(sectionid int(20) not null auto_increment primary key,"
 			+ "userid int(20),courseid int(20),createdtime datetime DEFAULT CURRENT_TIMESTAMP);";
 	
-	static String sql_create_tb_material = "create table tb_material(materialid int(20) not null auto_increment primary key,"
-			+ " courseid int(20), materialname char(60),filetype char(30),fileurl char(30),uploadedtime datetime DEFAULT CURRENT_TIMESTAMP;";
+	static String sql_create_tb_material = "create table db_englishlearningonline.tb_material(materialid int(20) not null auto_increment primary key,"
+			+ " courseid int(20), materialname char(60),filetype char(30),fileurl char(30),uploadedtime datetime DEFAULT CURRENT_TIMESTAMP);";
 
-	static String sql_create_tb_feedback = "create table tb_feedback(feedbackid int(20) not null auto_increment primary key,"
-			+ "userid int(20),usertype int(6),username char(20),comment char(255),courseid int(20), createdtime datetime DEFAULT CURRENT_TIMESTAMP;";
+	static String sql_create_tb_feedback = "create table db_englishlearningonline.tb_feedback(feedbackid int(20) not null auto_increment primary key,"
+			+ "userid int(20),usertype int(6),username char(20),content char(255),  courseid int(20), replyfeedbackid int(20) null, createdtime datetime DEFAULT CURRENT_TIMESTAMP);";
 
 	final static String JDBC_DRIVER = "com.mysql.jdbc.Driver";
 	final static String DB_URL = "jdbc:mysql://localhost:3306/db_englishlearningonline";
@@ -69,7 +71,7 @@ public class InitDatabase {
 		}
 	}
 	
-	public void create_db() {
+	public void create_db() throws SQLException {
 		if(exists_db(dbname)) {
 			System.out.println("database already exists!");	
 			return;
@@ -78,13 +80,18 @@ public class InitDatabase {
 			try
 			{
 				int ret  = 0 ;
-				ret  = DbUtil.executUpdate(sql_create_db, null);
+				DbUtil.createDatabase();
+//				ret  = DbUtil.executUpdate(sql_drop_db, null);
+//				ret  = DbUtil.executUpdate(sql_create_db, null);
 				ret  = DbUtil.executUpdate(sql_use_db, null);
+
 				ret  = DbUtil.executUpdate(sql_create_tb_user, null);
 				ret  = DbUtil.executUpdate(sql_create_tb_course, null);
 				ret  = DbUtil.executUpdate(sql_create_tb_section, null);
 				ret  = DbUtil.executUpdate(sql_create_tb_material, null);
 				ret  = DbUtil.executUpdate(sql_create_tb_feedback, null);
+				InitDatabase.getInitDatabase().addTestData();
+				System.out.println("create database well");
 				if (ret !=0) {
 					System.out.println("create db error!");
 				}
