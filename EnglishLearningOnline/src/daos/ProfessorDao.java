@@ -13,26 +13,26 @@ import jdbc.DbUtil;
 
 public class ProfessorDao {
 	
+//	public List<Professor> getAllProfessorList() throws SQLException{
+//
+//		String sql = "select * from tb_user where usertype = 20001";	
+//		ResultSet rs=DbUtil.executQuery(sql, null);		
+//		List<Professor> professorlist=new ArrayList<Professor>();
+//		Professor professor = null;
+//		while(rs.next()){
+//			professor=new Professor();
+//			professor.setUserid(rs.getInt("userid"));
+//			professor.setUsername(rs.getString("username"));
+//			professor.setUsertype(rs.getInt("usertype"));
+//			professor.setEmailaddress(rs.getString("emailaddress"));
+//			professorlist.add(professor);
+//		}
+//		return professorlist;
+//	}
 	public List<Professor> getAllProfessorList() throws SQLException{
 
-		String sql = "select * from tb_user where usertype = 20001";	
-		ResultSet rs=DbUtil.executQuery(sql, null);		
-		List<Professor> professorlist=new ArrayList<Professor>();
-		Professor professor = null;
-		while(rs.next()){
-			professor=new Professor();
-			professor.setUserid(rs.getInt("userid"));
-			professor.setUsername(rs.getString("username"));
-			professor.setUsertype(rs.getInt("usertype"));
-			professor.setEmailaddress(rs.getString("emailaddress"));
-			professorlist.add(professor);
-		}
-		return professorlist;
-	}
-	public List<Professor> getAllProfessorListJama() throws SQLException{
-
 		String sql = "select * from db_englishlearningonline.tb_user where usertype = 200000";
-		Connection conn = DbUtil.getConnectionJama();
+		Connection conn = DbUtil.getConnection();
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ResultSet rs = ps.executeQuery();
 		List<Professor> professorlist=new ArrayList<Professor>();
@@ -113,7 +113,7 @@ public class ProfessorDao {
 			sql = "INSERT INTO db_englishlearningonline.tb_course (coursename, professorid, professorname, prerequisiteCourseId) " + 
 					"  VALUES( '"+courseName+"', "+profID+", '"+profName+"', "+PreCourseID+") ";
 		}
-		Connection conn = DbUtil.getConnectionJama();
+		Connection conn = DbUtil.getConnection();
 		PreparedStatement ps;
 		try {
 			ps = conn.prepareStatement(sql);
@@ -126,7 +126,7 @@ public class ProfessorDao {
 	}
 	public static int getStudentIdByName(String userName) {
 		String sql = "SELECT s.userid FROM db_englishlearningonline.tb_user s WHERE s.username = '"+userName+"' LIMIT 1";
-		Connection conn = DbUtil.getConnectionJama();
+		Connection conn = DbUtil.getConnection();
 		int retId =0;
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);

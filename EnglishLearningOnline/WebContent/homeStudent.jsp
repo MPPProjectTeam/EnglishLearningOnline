@@ -56,7 +56,7 @@
 			"WHERE f2.userid = (SELECT s.userid FROM db_englishlearningonline.tb_user s WHERE s.username = '"+userName+"' LIMIT 1)) "+
 			") L, db_englishlearningonline.tb_course c WHERE c.courseid = L.courseid ORDER BY L.createdtime DESC";
 	
-	Connection conn = DbUtil.getConnectionJama();
+	Connection conn = DbUtil.getConnection();
 	//enrolled courses
 	PreparedStatement ps = conn.prepareStatement(sql);
 	PreparedStatement ps1 = conn.prepareStatement(sql);

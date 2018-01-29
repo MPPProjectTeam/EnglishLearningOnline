@@ -13,7 +13,7 @@ public class FeedbakDao {
 	public static void AddFeedbackByStudent(String userId, String userName, String courseId, String comment) {
 		String sql ="INSERT INTO db_englishlearningonline.tb_feedback (userid, usertype, username, content, courseid) "+
 		  "VALUES( "+userId+", 100000, '"+userName+"', '"+comment+"', "+courseId+" )";
-		Connection conn = DbUtil.getConnectionJama();
+		Connection conn = DbUtil.getConnection();
 		PreparedStatement ps;
 		try {
 			ps = conn.prepareStatement(sql);
@@ -26,7 +26,7 @@ public class FeedbakDao {
 	public static void ReplyFeedbackByProfessor(String userId, String userName, String courseId, String comment, String replyId) {
 		String sql ="INSERT INTO db_englishlearningonline.tb_feedback (userid, usertype, username, content, courseid, replyfeedbackid) "+
 		  "VALUES( "+userId+", 200000, '"+userName+"', '"+comment+"', "+courseId+" , "+replyId+" )";
-		Connection conn = DbUtil.getConnectionJama();
+		Connection conn = DbUtil.getConnection();
 		PreparedStatement ps;
 		try {
 			ps = conn.prepareStatement(sql);

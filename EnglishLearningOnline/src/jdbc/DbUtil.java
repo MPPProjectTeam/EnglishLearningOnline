@@ -6,16 +6,9 @@ import java.sql.ResultSet;
 
 public class DbUtil {
 	final static String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-	final static String DB_URL = "jdbc:mysql://localhost/student";
+	final static String DB_URL = "jdbc:mysql://localhost:3306/db_englishlearningonline";
 	final static String dbname = "root";
 	final static String dbpwd = "root";
-	
-	
-	final static String JDBC_DRIVER_JAMA = "com.mysql.jdbc.Driver";
-	final static String DB_URL_JAMA = "jdbc:mysql://localhost:3306/db_englishlearningonline";
-	final static String dbname_JAMA = "root";
-	final static String dbpwd_JAMA = "";
-	
 	
 	  public static Connection getConnection() {
 		  
@@ -30,17 +23,9 @@ public class DbUtil {
 	        return conn;
 	    }
 	  
-	  public static Connection getConnectionJama() {
-		  
-	        Connection conn = null;
-	        try {
-				Class.forName(JDBC_DRIVER_JAMA);
-	            conn = DriverManager.getConnection(DB_URL_JAMA,dbname_JAMA, dbpwd_JAMA);
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	        }
-	        return conn;
-	    }
+	public static  boolean  existDatabase(){
+			return  InitDatabase.exists_db(dbname);
+	}
 	  
 	  public static void closeAll(PreparedStatement pstmt, ResultSet rs) {
 		  
@@ -83,28 +68,6 @@ public class DbUtil {
 	    public static ResultSet executQuery(String sql, String[] param) {
 	    	
 	    	   Connection conn = DbUtil.getConnection();
-	    	   
-	        PreparedStatement pstmt = null;
-	        ResultSet result = null;
-	        try {
-	            pstmt = conn.prepareStatement(sql);
-	            if (param != null) {
-	                for (int i = 0; i < param.length; i++) {
-	                    pstmt.setString(i + 1, param[i]);
-	                }
-	            }
-	            result = pstmt.executeQuery();
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	        } finally {
-	            closeAll(pstmt, null);
-	        } 
-	        return result;
-	    }
-
-	    public static ResultSet executQueryJama(String sql, String[] param) {
-	    	
-	    	   Connection conn = DbUtil.getConnectionJama();
 	    	   
 	        PreparedStatement pstmt = null;
 	        ResultSet result = null;

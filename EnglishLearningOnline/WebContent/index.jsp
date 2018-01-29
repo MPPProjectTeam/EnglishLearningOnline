@@ -5,13 +5,21 @@
 <%@page import="models.Professor" %>
 <%@page import="models.Course" %>
 <%@page import="java.util.List" %>
+<%@page import="jdbc.DbUtil" %>
+<%@page import="jdbc.InitDatabase" %>
+
 <%
 	
+	//debug;
+	//InitDatabase.getInitDatabase().drop_db();
+	InitDatabase.getInitDatabase().create_db();
+	InitDatabase.getInitDatabase().addTestData();
+
 	ProfessorDao pd = new ProfessorDao();
-	List<Professor> allProfs = pd.getAllProfessorListJama();
-	
+	List<Professor> allProfs = pd.getAllProfessorList();
+
 	CourseDao cd = new CourseDao();
-	List<Course> allAvCourses = cd.getAvCourseListJama();
+	List<Course> allAvCourses = cd.getAvCourseList();
 
 %>
 <!doctype html>

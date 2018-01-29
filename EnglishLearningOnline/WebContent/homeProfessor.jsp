@@ -25,21 +25,21 @@
 	}
 	String userName = session.getAttribute("userName").toString();
 
-	CourseDao cd = new CourseDao();
-	List<Course> allAvCourses = cd.getAvCourseListJama();
-	int userId = ProfessorDao.getStudentIdByName(userName);
-	List<Course> allAvCoursesByProf = cd.getAvCourseListByProfNameJama("" + userId);
-	// get Comments
-	String sql = "SELECT L.*, c.coursename FROM " + "(SELECT * FROM db_englishlearningonline.tb_feedback f "
-			+ "WHERE f.userid = (SELECT s.userid FROM db_englishlearningonline.tb_user s WHERE s.username = '"
-			+ userName + "' LIMIT 1) " + "UNION ALL " + "SELECT * FROM db_englishlearningonline.tb_feedback f "
-			+ "WHERE f.courseid IN (select c.courseid FROM db_englishlearningonline.tb_course c WHERE c.professorname = '"
-			+ userName + "' ) "
-			+ ") L, db_englishlearningonline.tb_course c WHERE c.courseid = L.courseid ORDER BY L.createdtime DESC";
-	Connection conn = DbUtil.getConnectionJama();
-	//enrolled courses
-	PreparedStatement ps = conn.prepareStatement(sql);
-	ResultSet rs = ps.executeQuery();
+ 	CourseDao cd = new CourseDao();
+ 	List<Course> allAvCourses = cd.getAvCourseList();
+ 	int userId = ProfessorDao.getStudentIdByName(userName);
+ 	List<Course> allAvCoursesByProf = cd.getAvCourseListByProfName("" + userId);
+// 	// get Comments
+// 	String sql = "SELECT L.*, c.coursename FROM " + "(SELECT * FROM db_englishlearningonline.tb_feedback f "
+// 			+ "WHERE f.userid = (SELECT s.userid FROM db_englishlearningonline.tb_user s WHERE s.username = '"
+// 			+ userName + "' LIMIT 1) " + "UNION ALL " + "SELECT * FROM db_englishlearningonline.tb_feedback f "
+// 			+ "WHERE f.courseid IN (select c.courseid FROM db_englishlearningonline.tb_course c WHERE c.professorname = '"
+// 			+ userName + "' ) "
+// 			+ ") L, db_englishlearningonline.tb_course c WHERE c.courseid = L.courseid ORDER BY L.createdtime DESC";
+// 	Connection conn = DbUtil.getConnection();
+// 	//enrolled courses
+// 	PreparedStatement ps = conn.prepareStatement(sql);
+// 	ResultSet rs = ps.executeQuery();
 	
 %>
 <title>English Learning Online System</title>
@@ -143,8 +143,12 @@
 				<div class="card">
 					<div class="card-body">
 						<h5 class="card-title">Upload Materials</h5>
-						<form class="needs-validation card-text">
-							<div class="col-md-4 mb-3">
+						<form class="needs-validation card-text" method="post" action="HomeProfessor?formType=UploadMaterials" enctype="multipart/form-data">
+					<!-- 	  <input type="hidden" id="thisField" name="formType"
+									value="UploadMaterials"/> -->
+				
+					
+						<%-- 	<div class="col-md-4 mb-3">
 								<label for="state">Choose Course</label> <select
 									class="custom-select d-block w-100" id="state" required>
 									<%
@@ -155,9 +159,9 @@
 										}
 									%>
 								</select>
-							</div>
+							</div> --%>
 							<div class="col-md-4 mb-3">
-								<label for="state">File input</label> <input type="file"
+								<label for="state">File input</label> <input type="file" name="file"
 									class="form-control-file" id="exampleFormControlFile1">
 							</div>
 							<hr class="mb-4">

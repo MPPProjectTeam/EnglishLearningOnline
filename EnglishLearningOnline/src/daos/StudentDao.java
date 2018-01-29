@@ -89,7 +89,7 @@ public class StudentDao {
 		String sql = "INSERT INTO db_englishlearningonline.tb_section (userid, courseid) VALUES( '"+studentId+
 				"', '"+ courseId+"')";
 
-		Connection conn = DbUtil.getConnectionJama();
+		Connection conn = DbUtil.getConnection();
 		
 		PreparedStatement ps;
 		try {
@@ -104,7 +104,7 @@ public class StudentDao {
 	
 	public static int getStudentIdByName(String userName) {
 		String sql = "SELECT s.userid FROM db_englishlearningonline.tb_user s WHERE s.username = '"+userName+"' LIMIT 1";
-		Connection conn = DbUtil.getConnectionJama();
+		Connection conn = DbUtil.getConnection();
 		int retId =0;
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
